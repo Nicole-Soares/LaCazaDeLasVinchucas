@@ -31,7 +31,7 @@ public class Muestra {
 	}
 
 
-	public Date getFechaCreacion() {
+	public Date getFechaCreacion() { 
 		
 		return this.fechaMuestra;
 	}
