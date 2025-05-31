@@ -4,11 +4,11 @@ import java.util.Date;
 
 public enum Opinion {
 
-    VINCHUCA(0, new Date(),new Persona(1)),
-    CHINCHEFOLIADA(0, new Date(), new Persona(1)),
-    FITHUFOLIADA(0, new Date(), new Persona(1)),
-    NINGUNA(0, new Date(), new Persona(1)),
-    IMAGENPOCOCLARA(0, new Date(), new Persona(1));
+    VINCHUCA(0, new Date(), new Persona()), // persona empieza con desconocdio ??
+    CHINCHEFOLIADA(0, new Date(), new Persona()),
+    FITHUFOLIADA(0, new Date(), new Persona()),
+    NINGUNA(0, new Date(),new Persona()),
+    IMAGENPOCOCLARA(0, new Date(), new Persona());
 	
 	int likes;
 	Date fechaDeOpinion;
