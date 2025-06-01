@@ -1,5 +1,10 @@
 package vinchuca;
 
-public class Estado {
+public abstract class  Estado {
+
+	protected abstract void cargarOpinion(Muestra muestra, Opinion opinion);
+
+	public abstract Opinion resultadoActual(Muestra muestra);
+	
 
 }
