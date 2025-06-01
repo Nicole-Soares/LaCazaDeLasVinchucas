@@ -11,11 +11,7 @@ public class Persona {
 	List<Opinion> opinionesEmitidas;
 	List<Muestra> muestrasEmitidas;
 	Categoria categoria;
-	int cantidadDeEnvios;
-	int cantidadDeRevisiones;
-	List<Opinion> opinionesEmitidas;
-	List<Muestra> muestrasEmitidas;
-	Categoria categoria;
+	
 	
 	public Persona(int cantidadDeEnvios, int cantidadDeRevisiones, List<Opinion> opinionesEmitidas,
 			List<Muestra> muestrasEmitidas) {
