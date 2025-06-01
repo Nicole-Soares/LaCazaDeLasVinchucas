@@ -8,5 +8,11 @@ public class EstadoVerificado extends Estado {
 		
 	}
 
+	@Override
+	public Opinion resultadoActual(Muestra muestra) {
+		return muestra.resultadoActualEnEstadoVerificado();
+		
+	}
+
 	
 }

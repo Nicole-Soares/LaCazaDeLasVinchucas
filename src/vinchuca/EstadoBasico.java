@@ -8,4 +8,10 @@ public class EstadoBasico extends Estado{
 		muestra.cargarOpinionEnEstadoBasico(opinion);
 	}
 
+	@Override
+	public Opinion resultadoActual(Muestra muestra) {
+		return muestra.resultadoFinalEnEstadoBasico();
+		
+	}
+
 }

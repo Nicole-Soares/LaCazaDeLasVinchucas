@@ -8,4 +8,10 @@ public class EstadoExperto extends Estado {
         muestra.cargarOpinionEnEstadoExperto(opinion);
 	}
 
+	@Override
+	public Opinion resultadoActual(Muestra muestra) {
+		return muestra.resultadoFinalEnEstadoExperto();
+		
+	}
+
 }

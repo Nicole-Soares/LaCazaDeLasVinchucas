@@ -41,7 +41,7 @@ public class Muestra {
 		this.identificacion = identificacion;
 		this.fechaMuestra = fechaMuestra;
 		this.ubicacion = ubicacion;
-		this.opiniones = new ArrayList<>();
+		this.opiniones = new ArrayList<Opinion>();
 		this.estado = estado;
 		this.autor = autor;
 		this.filtro = filtro;
@@ -160,7 +160,10 @@ public class Muestra {
 		
 		
 		//recorrer la lista e ir creando un map
-		Map<Opinion, Integer> opinionesEnMap = new HashMap<>();
+		// tiene que tener en cuenta el estado
+		
+		return estado.resultadoActual(this);
+		/*Map<Opinion, Integer> opinionesEnMap = new HashMap<>();
 		
 		for(Opinion opinion: opiniones) {
 			if(this.seEncuentraEnMap(opinion, opinionesEnMap)) {
@@ -172,12 +175,46 @@ public class Muestra {
 		}
 		
 		return this.opinionMasVecesRepetida(opinionesEnMap);
+		*/
 		
 	}
 	
 
+	public Opinion resultadoFinalEnEstadoBasico() {
+		Map<Opinion, Integer> opinionesEnMap = new HashMap<>();
+	
+			for(Opinion opinion: opiniones) {
+				if(this.seEncuentraEnMap(opinion, opinionesEnMap)) {
+					this.sumarUnoAlMapDeLaOpinion(opinion, opinionesEnMap); // creo que no es necesario hacer =, se actualiza solo por el objeto
+				}
+				else {
+					this.meterLaOpinionEnElMap(opinion, opinionesEnMap);
+				}
+			}
+	
+	return this.opinionMasVecesRepetida(opinionesEnMap);
+	
+	}
+	
+	public Opinion resultadoActualEnEstadoVerificado() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 
+	public Opinion resultadoFinalEnEstadoExperto() {
+		// recorro la lista y retorno la primera opinion de un experto, si estoy en el estado experto es porque no comentaron dos expertos lo mismo, por ende retorno el primero que encuentre
+		
+		
+			List<Opinion> opinionesARecorrer = opiniones;
+			
+			while(!opinionesARecorrer.isEmpty() && !opinionesARecorrer.getFirst().esOpinionDeExperto()) {
+				opinionesARecorrer.remove(0);
+			}
+			return opinionesARecorrer.isEmpty() ? null : opinionesARecorrer.getFirst();
+		
+		
+	}
 	
 
 	private boolean seEncuentraEnMap(Opinion opinion, Map<Opinion, Integer> opinionesEnMap) {
@@ -228,6 +265,12 @@ public class Muestra {
 		}
 		
 	}
+
+	
+
+	
+
+	
 
 	
 }
