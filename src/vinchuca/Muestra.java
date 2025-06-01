@@ -67,6 +67,10 @@ public class Muestra {
 		this.opiniones = opiniones;
 	}
 
+	private void agregarOpinion(Opinion opinion) {
+		opiniones.add(opinion);
+		
+	}
 
 	public Persona getAutor() {
 		return autor;
@@ -147,9 +151,9 @@ public class Muestra {
 		
 	}
 	
-	public void cargarOpinion(Opinion opinion, Persona persona) {
+	public void cargarOpinion(Opinion opinion) {
 		// tengo que ver si la opinion recibida es de una persona que pueda opinar segun el estado actual de su muestra
-		estado.cargarOpinion(this, persona, opinion);
+		estado.cargarOpinion(this,  opinion);
 	}
 	
 	public Opinion resultadoActual() {
@@ -205,38 +209,25 @@ public class Muestra {
 		    return masRepetida;
 	}
 
-	/**if(!opiniones.isEmpty()) {
-	
-	Opinion opinionConMasLikes = opiniones.getFirst();	
-	/*opiniones.removeFirst();
-;			for(Opinion opinion: opinionesSinElPrimerElemento) {
-				
-	}
-	for(int i =1; i <= opiniones.size(); i++) { // empieza en 1 para evitar el primero
-		Opinion opinion = opiniones.get(i);
-		if(opinion.getLikes() > opinionConMasLikes.getLikes()) {
-			opinionConMasLikes = opinion;
-			
-		}
-	}
-	
-	return opinionConMasLikes;
-}
 
-return null;
-*/
-
-	public void cargarOpinionEnEstadoBasico(Persona persona, Opinion opinion) {
+	public void cargarOpinionEnEstadoBasico(Opinion opinion) {
+		//EstadoExperto estadoExperto = new EstadoExperto();
 		this.agregarOpinion(opinion);
+		if(opinion.esOpinionDeExperto()) {
+			EstadoExperto estadoExperto = new EstadoExperto();
+			this.setEstado(estadoExperto);
+		}
 		
+	}
+	
+	public void cargarOpinionEnEstadoExperto(Opinion opinion) { 
+		
+		//de otra manera le tengo que delegar a  opinion, opinion a persona, persona a su estado, el estado retornar algo
+		if(opinion.esOpinionDeExperto()) {
+			this.agregarOpinion(opinion);
+		}
 		
 	}
 
-	private void agregarOpinion(Opinion opinion) {
-		opiniones.add(opinion);
-		
-	}
-	
-	
 	
 }

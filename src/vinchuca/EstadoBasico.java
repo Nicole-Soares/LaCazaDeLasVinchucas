@@ -3,11 +3,9 @@ package vinchuca;
 public class EstadoBasico extends Estado{
 
 	@Override
-	protected void cargarOpinion(Muestra muestra, Persona persona, Opinion opinion) {
+	protected void cargarOpinion(Muestra muestra, Opinion opinion) {
 		//decirle a muestra que cualquiera puede escribir en este estado
-		
-		muestra.cargarOpinionEnEstadoBasico(persona, opinion);
-		
+		muestra.cargarOpinionEnEstadoBasico(opinion);
 	}
 
 }

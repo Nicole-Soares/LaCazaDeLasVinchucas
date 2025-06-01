@@ -4,29 +4,22 @@ import java.util.Date;
 
 public enum Opinion {
 
-    VINCHUCA(0, new Date(), new Persona()), // persona empieza con desconocdio ??
-    CHINCHEFOLIADA(0, new Date(), new Persona()),
-    FITHUFOLIADA(0, new Date(), new Persona()),
-    NINGUNA(0, new Date(),new Persona()),
-    IMAGENPOCOCLARA(0, new Date(), new Persona());
+    VINCHUCA( new Date(), new Persona()), // persona empieza con desconocdio ??
+    CHINCHEFOLIADA( new Date(), new Persona()),
+    FITHUFOLIADA( new Date(), new Persona()),
+    NINGUNA( new Date(),new Persona()),
+    IMAGENPOCOCLARA( new Date(), new Persona());
 	
-	int likes;
+	
 	Date fechaDeOpinion;
 	Persona persona;
 
-	private Opinion(int likes, Date fecha, Persona persona) {
-		this.likes = likes;
+	private Opinion( Date fecha, Persona persona) {
 		this.fechaDeOpinion = fecha;
 		this.persona = persona;
 	}
 
-	public int getLikes() {
-		return likes;
-	}
-
-	public void setLikes(int likes) {
-		this.likes = likes;
-	}
+	
 
 	public Date getFechaDeOpinion() {
 		return fechaDeOpinion;
@@ -43,6 +36,13 @@ public enum Opinion {
 	public void setPersona(Persona persona) {
 		this.persona = persona;
 	}
+	
+	public boolean esOpinionDeExperto() {
+		return this.persona.esExperto();
+	}
+
+
+
 	
 	
 	
