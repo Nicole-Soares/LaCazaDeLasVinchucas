@@ -5,11 +5,13 @@ import java.util.List;
 
 public class Persona {
 
+
 	int cantidadDeEnvios;
 	int cantidadDeRevisiones;
 	List<Opinion> opinionesEmitidas;
 	List<Muestra> muestrasEmitidas;
 	Categoria categoria;
+	
 	
 	public Persona(int cantidadDeEnvios, int cantidadDeRevisiones, List<Opinion> opinionesEmitidas,
 			List<Muestra> muestrasEmitidas) {
@@ -87,4 +89,5 @@ public class Persona {
 	public boolean esBasico() {
 		return this.categoria.esBasico();
 	}
+
 }
