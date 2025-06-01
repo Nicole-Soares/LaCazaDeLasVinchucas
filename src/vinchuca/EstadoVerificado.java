@@ -4,13 +4,13 @@ public class EstadoVerificado extends Estado {
 
 	@Override
 	protected void cargarOpinion(Muestra muestra, Opinion opinion) {
-		// TODO Auto-generated method stub
+		muestra.cargarOpinionEnEstadoVerificado(opinion);
 		
 	}
 
 	@Override
 	public Opinion resultadoActual(Muestra muestra) {
-		return muestra.resultadoActualEnEstadoVerificado();
+		return muestra.resultadoFinalEnEstadoVerificado();
 		
 	}
 

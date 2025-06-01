@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Muestra {
 
@@ -17,6 +18,7 @@ public class Muestra {
 	private Estado estado;
 	private Persona autor;
 	private Filtro filtro;
+	
 	
 	
 	
@@ -196,10 +198,6 @@ public class Muestra {
 	
 	}
 	
-	public Opinion resultadoActualEnEstadoVerificado() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 
 	public Opinion resultadoFinalEnEstadoExperto() {
@@ -216,6 +214,17 @@ public class Muestra {
 		
 	}
 	
+	public Opinion resultadoFinalEnEstadoVerificado() {
+		Map<Opinion, Long> conteoOpiniones = opiniones.stream()
+		        .filter(Opinion::esOpinionDeExperto) // Filtramos solo opiniones de expertos
+		        .collect(Collectors.groupingBy(op -> op, Collectors.counting())); // Contamos cuántas veces aparece cada opinión
+
+		    return conteoOpiniones.entrySet().stream()
+		        .filter(entry -> entry.getValue() >= 2) // Buscamos opiniones con al menos dos expertos
+		        .map(Map.Entry::getKey) // Extraemos la opinión
+		        .findFirst()
+		        .orElse(null);
+	}
 
 	private boolean seEncuentraEnMap(Opinion opinion, Map<Opinion, Integer> opinionesEnMap) {
 		
@@ -252,7 +261,7 @@ public class Muestra {
 		this.agregarOpinion(opinion);
 		if(opinion.esOpinionDeExperto()) {
 			EstadoExperto estadoExperto = new EstadoExperto();
-			this.setEstado(estadoExperto);
+			this.cambiarEstado(estadoExperto);
 		}
 		
 	}
@@ -264,7 +273,31 @@ public class Muestra {
 			this.agregarOpinion(opinion);
 		}
 		
+		if(this.mismaOpinionYaPublicada(opinion)) {
+			EstadoVerificado estadoVerificado = new EstadoVerificado();
+			this.cambiarEstado(estadoVerificado);
+		}
+		
 	}
+	
+	public void cargarOpinionEnEstadoVerificado(Opinion opinion) {
+		System.out.println("No se aceptan mas opiniones");
+		
+	}
+
+	private void cambiarEstado(Estado estado) {
+		this.setEstado(estado);
+		
+	}
+
+	private boolean mismaOpinionYaPublicada(Opinion opinion) {
+		return opiniones.stream()
+	            .anyMatch(o -> o.esOpinionDeExperto() && o.getTipo().equals(opinion.getTipo()));
+	}
+
+	
+
+	
 
 	
 
