@@ -13,7 +13,7 @@ public class FiltroAND implements TipoFiltro {
 		
 	public boolean cumple(Muestra muestra) {
 			
-		return this.filtro1.cumple(muestra) || this.filtro2.cumple(muestra);
+		return this.filtro1.cumple(muestra) && this.filtro2.cumple(muestra);
 	}
 
 }
