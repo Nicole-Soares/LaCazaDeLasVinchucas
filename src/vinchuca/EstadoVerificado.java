@@ -14,5 +14,13 @@ public class EstadoVerificado extends Estado {
 		
 	}
 
+	@Override
+	public String nombre() {
+		
+		return "Verificado";
+	}
+
+	
+	
 	
 }

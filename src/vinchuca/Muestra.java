@@ -1,5 +1,4 @@
 package vinchuca;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -293,6 +292,11 @@ public class Muestra {
 	private boolean mismaOpinionYaPublicada(Opinion opinion) {
 		return opiniones.stream()
 	            .anyMatch(o -> o.esOpinionDeExperto() && o.getTipo().equals(opinion.getTipo()));
+	}
+
+	public String getNombreEstado() {
+
+		return this.estado.nombre();
 	}
 
 	
