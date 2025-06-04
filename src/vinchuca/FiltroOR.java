@@ -1,6 +1,6 @@
 package vinchuca;
 
-public class FiltroOR implements TipoFiltro {
+public class FiltroOR extends FiltroCompuesto {
 
 	private TipoFiltro filtro1;
 	private TipoFiltro filtro2;

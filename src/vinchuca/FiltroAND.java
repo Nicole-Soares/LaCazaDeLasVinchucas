@@ -1,6 +1,6 @@
 package vinchuca;
 
-public class FiltroAND implements TipoFiltro {
+public class FiltroAND extends FiltroCompuesto {
 
 	private TipoFiltro filtro1;
 	private TipoFiltro filtro2;
