@@ -18,12 +18,12 @@ public class Muestra {
 	private Estado estado;
 	private Persona autor;
 	private Filtro filtro;
-	
+	private ManejadorMuestra manejadorMuestra;
 	
 	
 	
 	public Muestra(String especieDeVinchuca, String foto, String identificacion, Date fechaMuestra, Ubicacion ubicacion,
-			List<Opinion> opiniones, Estado estado, Persona autor, Filtro filtro) {
+			List<Opinion> opiniones, Estado estado, Persona autor, Filtro filtro, ManejadorMuestra manejadorMuestra) {
 		super();
 		this.especieDeVinchuca = especieDeVinchuca;
 		this.foto = foto;
@@ -34,9 +34,10 @@ public class Muestra {
 		this.estado = estado;
 		this.autor = autor;
 		this.filtro = filtro;
+		this.manejadorMuestra = manejadorMuestra;
 	}
 	
-	public Muestra(String especieDeVinchuca, String foto, String identificacion, Date fechaMuestra, Ubicacion ubicacion, Estado estado, Persona autor, Filtro filtro) {
+	public Muestra(String especieDeVinchuca, String foto, String identificacion, Date fechaMuestra, Ubicacion ubicacion, Estado estado, Persona autor, Filtro filtro, ManejadorMuestra manejadorMuestra){
 		super();
 		this.especieDeVinchuca = especieDeVinchuca;
 		this.foto = foto;
@@ -47,9 +48,23 @@ public class Muestra {
 		this.estado = estado;
 		this.autor = autor;
 		this.filtro = filtro;
+		this.manejadorMuestra = manejadorMuestra;
 	}
 
 	
+	
+	public String getEspecieDeVinchuca() {
+		return especieDeVinchuca;
+	}
+
+	public void setEspecieDeVinchuca(String especieDeVinchuca) {
+		this.especieDeVinchuca = especieDeVinchuca;
+	}
+
+	public Date getFechaMuestra() {
+		return fechaMuestra;
+	}
+
 	public Ubicacion getUbicacion() {
 		return ubicacion;
 	}
@@ -145,6 +160,15 @@ public class Muestra {
 		this.fechaMuestra = fechaMuestra;
 	}
 
+	
+
+	public ManejadorMuestra getManejadorMuestra() {
+		return manejadorMuestra;
+	}
+
+	public void setManejadorMuestra(ManejadorMuestra manejadorMuestra) {
+		this.manejadorMuestra = manejadorMuestra;
+	}
 
 	public Date fechaUltimaOpinion() {
 		 Opinion ultimoElemento = opiniones.get(opiniones.size() - 1);
@@ -276,6 +300,7 @@ public class Muestra {
 		if(this.mismaOpinionYaPublicada(opinion)) {
 			EstadoVerificado estadoVerificado = new EstadoVerificado();
 			this.cambiarEstado(estadoVerificado);
+			manejadorMuestra.notificar(this);
 		}
 		
 	}
@@ -296,7 +321,13 @@ public class Muestra {
 	}
 
 	
-
+	public void suscribir(ZonaCobertura zona) {
+		manejadorMuestra.suscribir(zona, this);
+	}
+	
+	public void desuscribir(ZonaCobertura zona) {
+		manejadorMuestra.desuscribir(zona);
+	}
 	
 
 	
