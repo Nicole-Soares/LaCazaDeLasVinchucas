@@ -11,8 +11,7 @@ public class Muestra {
 
 	private String especieDeVinchuca;
 	private String foto;
-	private String identificacion;
-	private Date fechaMuestra;
+	private LocalDate fechaMuestra;
 	private Ubicacion ubicacion;
 	private List<Opinion> opiniones;
 	private Estado estado;
@@ -22,12 +21,11 @@ public class Muestra {
 	
 	
 	
-	public Muestra(String especieDeVinchuca, String foto, String identificacion, Date fechaMuestra, Ubicacion ubicacion,
+	public Muestra(String especieDeVinchuca, String foto,  LocalDate fechaMuestra, Ubicacion ubicacion,
 			List<Opinion> opiniones, Estado estado, Persona autor, Filtro filtro, ManejadorMuestra manejadorMuestra) {
 		super();
 		this.especieDeVinchuca = especieDeVinchuca;
 		this.foto = foto;
-		this.identificacion = identificacion;
 		this.fechaMuestra = fechaMuestra;
 		this.ubicacion = ubicacion;
 		this.opiniones = opiniones;
@@ -37,11 +35,10 @@ public class Muestra {
 		this.manejadorMuestra = manejadorMuestra;
 	}
 	
-	public Muestra(String especieDeVinchuca, String foto, String identificacion, Date fechaMuestra, Ubicacion ubicacion, Estado estado, Persona autor, Filtro filtro, ManejadorMuestra manejadorMuestra){
+	public Muestra(String especieDeVinchuca, String foto,  LocalDate fechaMuestra, Ubicacion ubicacion, Estado estado, Persona autor, Filtro filtro, ManejadorMuestra manejadorMuestra){
 		super();
 		this.especieDeVinchuca = especieDeVinchuca;
 		this.foto = foto;
-		this.identificacion = identificacion;
 		this.fechaMuestra = fechaMuestra;
 		this.ubicacion = ubicacion;
 		this.opiniones = new ArrayList<Opinion>();
@@ -61,7 +58,7 @@ public class Muestra {
 		this.especieDeVinchuca = especieDeVinchuca;
 	}
 
-	public Date getFechaMuestra() {
+	public LocalDate getFechaMuestra() {
 		return fechaMuestra;
 	}
 
@@ -140,23 +137,15 @@ public class Muestra {
 	}
 
 
-	public String getIdentificacion() {
-		return identificacion;
-	}
 
 
-	public void setIdentificacion(String identificacion) {
-		this.identificacion = identificacion;
-	}
-
-
-	public Date getFechaCreacion() {
+	public LocalDate getFechaCreacion() {
 		return fechaMuestra;
 
 	}
 
 
-	public void setFechaMuestra(Date fechaMuestra) {
+	public void setFechaMuestra(LocalDate fechaMuestra) {
 		this.fechaMuestra = fechaMuestra;
 	}
 
@@ -218,7 +207,7 @@ public class Muestra {
 				}
 			}
 	
-	return this.opinionMasVecesRepetida(opinionesEnMap);
+			return this.opinionMasVecesRepetida(opinionesEnMap);
 	
 	}
 	
@@ -292,16 +281,19 @@ public class Muestra {
 	
 	public void cargarOpinionEnEstadoExperto(Opinion opinion) { 
 		
-		//de otra manera le tengo que delegar a  opinion, opinion a persona, persona a su estado, el estado retornar algo
+		
 		if(opinion.esOpinionDeExperto()) {
+			//chequeo que esa opinion no este ya hecha, si esta en este estado es porque ya algun experto anterior publico una opinion
+			if(this.mismaOpinionYaPublicada(opinion)) {
+				System.out.println(this.mismaOpinionYaPublicada(opinion));
+				EstadoVerificado estadoVerificado = new EstadoVerificado();
+				this.cambiarEstado(estadoVerificado);
+				manejadorMuestra.notificar(this);
+			}
 			this.agregarOpinion(opinion);
+			
 		}
 		
-		if(this.mismaOpinionYaPublicada(opinion)) {
-			EstadoVerificado estadoVerificado = new EstadoVerificado();
-			this.cambiarEstado(estadoVerificado);
-			manejadorMuestra.notificar(this);
-		}
 		
 	}
 	
@@ -316,8 +308,10 @@ public class Muestra {
 	}
 
 	private boolean mismaOpinionYaPublicada(Opinion opinion) {
+		System.out.println(opiniones);
+		System.out.println(opinion.getTipo());
 		return opiniones.stream()
-	            .anyMatch(o -> o.esOpinionDeExperto() && o.getTipo().equals(opinion.getTipo()));
+	            .anyMatch(o -> o.esOpinionDeExperto() && o.getTipo() == opinion.getTipo());
 	}
 
 	
@@ -329,12 +323,5 @@ public class Muestra {
 		manejadorMuestra.desuscribir(zona);
 	}
 	
-
-	
-
-	
-
-	
-
 	
 }
