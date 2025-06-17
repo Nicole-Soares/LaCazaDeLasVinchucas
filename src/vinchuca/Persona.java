@@ -1,52 +1,34 @@
 package vinchuca;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Persona {
 
 
-	int cantidadDeEnvios;
-	int cantidadDeRevisiones;
 	List<Opinion> opinionesEmitidas;
 	List<Muestra> muestrasEmitidas;
 	Categoria categoria;
 	
 	
-	public Persona(int cantidadDeEnvios, int cantidadDeRevisiones, List<Opinion> opinionesEmitidas,
+	public Persona(List<Opinion> opinionesEmitidas,
 			List<Muestra> muestrasEmitidas) {
 		super();
-		this.cantidadDeEnvios = cantidadDeEnvios;
-		this.cantidadDeRevisiones = cantidadDeRevisiones;
 		this.opinionesEmitidas = opinionesEmitidas;
 		this.muestrasEmitidas = muestrasEmitidas;
 		this.categoria = new Basico();
 	}
 	
-	public Persona(int cantidadDeEnvios, int cantidadDeRevisiones) {
+	public Persona() {
 		super();
-		this.cantidadDeEnvios = cantidadDeEnvios;
-		this.cantidadDeRevisiones = cantidadDeRevisiones;
 		this.opinionesEmitidas = new ArrayList<>();
 		this.muestrasEmitidas = new ArrayList<>();
 		this.categoria = new Basico();
 	}
 
-	public int getCantidadDeEnvios() {
-		return cantidadDeEnvios;
-	}
 
-	public void agregarUnEnvio() {
-		this.cantidadDeEnvios =+1;
-	}
-
-	public int getCantidadDeRevisiones() {
-		return cantidadDeRevisiones;
-	}
-
-	public void agregarUnaRevision() {
-		this.cantidadDeRevisiones =+ 1;
-	}
 
 	public List<Opinion> getOpinionesEmitidas() {
 		return opinionesEmitidas;
@@ -74,12 +56,15 @@ public class Persona {
 		this.categoria = categoria;
 	}
 
-	public void opinarSobre() {
-		
+	public void opinarSobre(Muestra muestra, Opinion opinion) {
+		muestra.cargarOpinion(opinion);
+		this.opinionesEmitidas.add(opinion);
+		this.verificarCategoria();
 	}
 	
-	public void enviarMuestra() {
-		
+	public void enviarMuestra(Muestra muestra) {
+		this.muestrasEmitidas.add(muestra);
+		this.verificarCategoria();
 	}
 	
 	public boolean esExperto() {
@@ -90,4 +75,22 @@ public class Persona {
 		return this.categoria.esBasico();
 	}
 
+	public void verificarCategoria() {
+		LocalDate fechaLimite = LocalDate.now().minusDays(30);
+		
+		long cantidadDeOpinionesValidas = this.opinionesEmitidas.stream()
+											.filter(o -> !o.getFechaDeOpinion().isBefore(fechaLimite))
+											.count();
+		
+		long cantidadDeMuestrasEnviadasValidas = this.muestrasEmitidas.stream()
+													.filter(m -> !m.getFechaCreacion().isBefore(fechaLimite))
+													.count();
+		
+		if (cantidadDeOpinionesValidas > 20 && cantidadDeMuestrasEnviadasValidas > 10) {
+			this.cambiarCategoria(new Experto());
+		}
+	}
+	
+	
+	
 }

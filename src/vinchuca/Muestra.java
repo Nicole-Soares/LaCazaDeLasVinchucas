@@ -1,4 +1,5 @@
 package vinchuca;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,7 +12,7 @@ public class Muestra {
 	private String especieDeVinchuca;
 	private String foto;
 	private String identificacion;
-	private Date fechaMuestra;
+	private LocalDate fechaMuestra;
 	private Ubicacion ubicacion;
 	private List<Opinion> opiniones;
 	private Estado estado;
@@ -21,7 +22,7 @@ public class Muestra {
 	
 	
 	
-	public Muestra(String especieDeVinchuca, String foto, String identificacion, Date fechaMuestra, Ubicacion ubicacion,
+	public Muestra(String especieDeVinchuca, String foto, String identificacion, LocalDate fechaMuestra, Ubicacion ubicacion,
 			List<Opinion> opiniones, Estado estado, Persona autor, Filtro filtro) {
 		super();
 		this.especieDeVinchuca = especieDeVinchuca;
@@ -35,7 +36,7 @@ public class Muestra {
 		this.filtro = filtro;
 	}
 	
-	public Muestra(String especieDeVinchuca, String foto, String identificacion, Date fechaMuestra, Ubicacion ubicacion, Estado estado, Persona autor, Filtro filtro) {
+	public Muestra(String especieDeVinchuca, String foto, String identificacion, LocalDate fechaMuestra, Ubicacion ubicacion, Estado estado, Persona autor, Filtro filtro) {
 		super();
 		this.especieDeVinchuca = especieDeVinchuca;
 		this.foto = foto;
@@ -134,13 +135,13 @@ public class Muestra {
 	}
 
 
-	public Date getFechaCreacion() {
+	public LocalDate getFechaCreacion() {
 		return fechaMuestra;
 
 	}
 
 
-	public void setFechaMuestra(Date fechaMuestra) {
+	public void setFechaMuestra(LocalDate fechaMuestra) {
 		this.fechaMuestra = fechaMuestra;
 	}
 
