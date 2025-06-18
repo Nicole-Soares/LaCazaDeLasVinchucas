@@ -17,7 +17,7 @@ public class Muestra {
 	private Estado estado;
 	private Persona autor;
 	private Filtro filtro;
-	private ManejadorMuestra manejadorMuestra;
+	private ManagerMuestraVerificada manejadorMuestra;
 	
 	
 	
@@ -35,7 +35,7 @@ public class Muestra {
 		this.manejadorMuestra = manejadorMuestra;
 	}*/
 	
-	public Muestra(String especieDeVinchuca, String foto,  LocalDate fechaMuestra, Ubicacion ubicacion, Estado estado, Persona autor, Filtro filtro, ManejadorMuestra manejadorMuestra){
+	public Muestra(String especieDeVinchuca, String foto,  LocalDate fechaMuestra, Ubicacion ubicacion, Estado estado, Persona autor, Filtro filtro, ManagerMuestraVerificada manejadorMuestra){
 		super();
 		this.especieDeVinchuca = especieDeVinchuca;
 		this.foto = foto;
@@ -129,11 +129,11 @@ public class Muestra {
 
 	
 
-	public ManejadorMuestra getManejadorMuestra() {
+	public ManagerMuestraVerificada getManejadorMuestra() {
 		return manejadorMuestra;
 	}
 
-	public void setManejadorMuestra(ManejadorMuestra manejadorMuestra) {
+	public void setManejadorMuestra(ManagerMuestraVerificada manejadorMuestra) {
 		this.manejadorMuestra = manejadorMuestra;
 	}
 
@@ -307,9 +307,9 @@ public class Muestra {
 		manejadorMuestra.desuscribir(zona);
 	}
 	
-	public void notificarMuestraNueva() {
+	/*public void notificarMuestraNueva() {
 		manejadorMuestra.notificarMuestraNueva(this);
-	}
+	}*/
 	
 	
 }

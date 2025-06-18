@@ -9,18 +9,18 @@ import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ManejadorMuestraTest {
+public class ManagerMuestraVerificadaTest {
 
 	
 
     private Muestra muestra;
-    private ManejadorMuestra manejador;
+    private ManagerMuestraVerificada manejador;
     private ZonaCobertura zonaCobertura;
     
    
     @BeforeEach
     public void setup(){
-    	manejador = new ManejadorMuestra();
+    	manejador = new ManagerMuestraVerificada();
     	muestra = mock(Muestra.class);
     	zonaCobertura = mock(ZonaCobertura.class);
     

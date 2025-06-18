@@ -3,12 +3,12 @@ package vinchuca;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManejadorMuestra {
+public class ManagerMuestraVerificada {
 
 	private List <ZonaCobertura> listaDeZonasCobertura;
 	
 
-	public ManejadorMuestra() {
+	public ManagerMuestraVerificada() {
 		super();
 		this.listaDeZonasCobertura = new ArrayList<ZonaCobertura>();
 	}
@@ -34,13 +34,13 @@ public class ManejadorMuestra {
 		
 	}
 	
-	public void notificarMuestraNueva(Muestra muestra) {
+	/*public void notificarMuestraNueva(Muestra muestra) {
 		for(ZonaCobertura zona: listaDeZonasCobertura) {
 			zona.avisarNuevaMuestra(muestra);
 		}
 		
 	}
-
+*/
 
 	public List<ZonaCobertura> getListaDeSuscriptores() {
 		return listaDeZonasCobertura;
