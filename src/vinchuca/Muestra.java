@@ -21,7 +21,7 @@ public class Muestra {
 	
 	
 	
-	public Muestra(String especieDeVinchuca, String foto,  LocalDate fechaMuestra, Ubicacion ubicacion,
+	/*public Muestra(String especieDeVinchuca, String foto,  LocalDate fechaMuestra, Ubicacion ubicacion,
 			List<Opinion> opiniones, Estado estado, Persona autor, Filtro filtro, ManejadorMuestra manejadorMuestra) {
 		super();
 		this.especieDeVinchuca = especieDeVinchuca;
@@ -33,7 +33,7 @@ public class Muestra {
 		this.autor = autor;
 		this.filtro = filtro;
 		this.manejadorMuestra = manejadorMuestra;
-	}
+	}*/
 	
 	public Muestra(String especieDeVinchuca, String foto,  LocalDate fechaMuestra, Ubicacion ubicacion, Estado estado, Persona autor, Filtro filtro, ManejadorMuestra manejadorMuestra){
 		super();
@@ -58,9 +58,6 @@ public class Muestra {
 		this.especieDeVinchuca = especieDeVinchuca;
 	}
 
-	public LocalDate getFechaMuestra() {
-		return fechaMuestra;
-	}
 
 	public Ubicacion getUbicacion() {
 		return ubicacion;
@@ -76,10 +73,6 @@ public class Muestra {
 		return opiniones;
 	}
 
-
-	public void setOpiniones(List<Opinion> opiniones) {
-		this.opiniones = opiniones;
-	}
 
 	private void agregarOpinion(Opinion opinion) {
 		opiniones.add(opinion);
@@ -106,24 +99,9 @@ public class Muestra {
 	}
 
 
-	public Estado getEstado() {
-		return estado;
-	}
-
 
 	public void setEstado(Estado estado) {
 		this.estado = estado;
-	}
-
-
-	
-	public String getEspecie() {
-		return especieDeVinchuca;
-	}
-
-
-	public void setEspecie(String especie) {
-		this.especieDeVinchuca = especie;
 	}
 
 
@@ -178,36 +156,24 @@ public class Muestra {
 		// tiene que tener en cuenta el estado
 		
 		return estado.resultadoActual(this);
-		/*Map<Opinion, Integer> opinionesEnMap = new HashMap<>();
 		
-		for(Opinion opinion: opiniones) {
-			if(this.seEncuentraEnMap(opinion, opinionesEnMap)) {
-				this.sumarUnoAlMapDeLaOpinion(opinion, opinionesEnMap); // creo que no es necesario hacer =, se actualiza solo por el objeto
-			}
-			else {
-				 this.meterLaOpinionEnElMap(opinion, opinionesEnMap);
-			}
-		}
-		
-		return this.opinionMasVecesRepetida(opinionesEnMap);
-		*/
 		
 	}
 	
 
 	public Opinion resultadoFinalEnEstadoBasico() {
-		Map<Opinion, Integer> opinionesEnMap = new HashMap<>();
+		Map<TipoDeOpinion, Integer> conteo = new HashMap<>();
 	
 			for(Opinion opinion: opiniones) {
-				if(this.seEncuentraEnMap(opinion, opinionesEnMap)) {
-					this.sumarUnoAlMapDeLaOpinion(opinion, opinionesEnMap); // creo que no es necesario hacer =, se actualiza solo por el objeto
+				if(this.seEncuentraEnMap(opinion, conteo)) {
+					this.sumarUnoAlMapDeLaOpinion(opinion, conteo); // creo que no es necesario hacer =, se actualiza solo por el objeto
 				}
 				else {
-					this.meterLaOpinionEnElMap(opinion, opinionesEnMap);
+					this.meterLaOpinionEnElMap(opinion, conteo);
 				}
 			}
 	
-			return this.opinionMasVecesRepetida(opinionesEnMap);
+			return this.opinionMasVecesRepetida(conteo);
 	
 	}
 	
@@ -217,56 +183,77 @@ public class Muestra {
 		// recorro la lista y retorno la primera opinion de un experto, si estoy en el estado experto es porque no comentaron dos expertos lo mismo, por ende retorno el primero que encuentre
 		
 		
-			List<Opinion> opinionesARecorrer = opiniones;
-			
-			while(!opinionesARecorrer.isEmpty() && !opinionesARecorrer.getFirst().esOpinionDeExperto()) {
-				opinionesARecorrer.remove(0);
-			}
-			return opinionesARecorrer.isEmpty() ? null : opinionesARecorrer.getFirst();
+		List<Opinion> opinionesARecorrer = opiniones;
+		
+		while( !opinionesARecorrer.getFirst().esOpinionDeExperto()) {
+			opinionesARecorrer.remove(0);
+		}
+		return opinionesARecorrer.getFirst();
 		
 		
 	}
 	
 	public Opinion resultadoFinalEnEstadoVerificado() {
-		Map<Opinion, Long> conteoOpiniones = opiniones.stream()
-		        .filter(Opinion::esOpinionDeExperto) // Filtramos solo opiniones de expertos
-		        .collect(Collectors.groupingBy(op -> op, Collectors.counting())); // Contamos cuántas veces aparece cada opinión
+	    // Contamos cuántas veces aparece cada tipo de opinión entre los expertos
+		//solo opiniones de expertos (los tipos)
+	    Map<TipoDeOpinion, Long> conteoPorTipo = opiniones.stream()
+	        .filter(Opinion::esOpinionDeExperto)
+	        .collect(Collectors.groupingBy(Opinion::getTipo, Collectors.counting()));
 
-		    return conteoOpiniones.entrySet().stream()
-		        .filter(entry -> entry.getValue() >= 2) // Buscamos opiniones con al menos dos expertos
-		        .map(Map.Entry::getKey) // Extraemos la opinión
+	    //Buscamos el tipo con al menos dos opiniones
+	    Opinion opinionDefinitiva = conteoPorTipo.entrySet().stream()
+		        .filter(entry -> entry.getValue() >= 2)
+		        .map(Map.Entry::getKey)
 		        .findFirst()
+		        .flatMap(tipo ->
+		            opiniones.stream()
+		                .filter(o -> o.getTipo() == tipo && o.esOpinionDeExperto())
+		                .findFirst()
+		        )
 		        .orElse(null);
+	    
+	    return opinionDefinitiva;
 	}
 
-	private boolean seEncuentraEnMap(Opinion opinion, Map<Opinion, Integer> opinionesEnMap) {
+	private boolean seEncuentraEnMap(Opinion opinion, Map<TipoDeOpinion, Integer> opinionesEnMap) {
 		
-		return opinionesEnMap.containsKey(opinion);
+		return opinionesEnMap.containsKey(opinion.getTipo());
 	}
 	
-	private void sumarUnoAlMapDeLaOpinion(Opinion opinion, Map<Opinion, Integer> opinionesEnMap) {
-		 opinionesEnMap.put(opinion, opinionesEnMap.get(opinion) + 1);
-		
-	}
-	
-	private void meterLaOpinionEnElMap(Opinion opinion, Map<Opinion, Integer> opinionesEnMap) {
-		opinionesEnMap.put(opinion, 1);
+	private void sumarUnoAlMapDeLaOpinion(Opinion opinion, Map<TipoDeOpinion, Integer> opinionesEnMap) {
+		opinionesEnMap.put(opinion.getTipo(), opinionesEnMap.get(opinion.getTipo()) + 1);
+
 		
 	}
 	
-	private Opinion opinionMasVecesRepetida(Map<Opinion, Integer> opinionesEnMap) {
-		    Opinion masRepetida = null;
-		    int maxFrecuencia = 0;
-
-		    for (Map.Entry<Opinion, Integer> entry : opinionesEnMap.entrySet()) {
-		        if (entry.getValue() > maxFrecuencia) {
-		            maxFrecuencia = entry.getValue();
-		            masRepetida = entry.getKey();
-		        }
-		    }
-
-		    return masRepetida;
+	private void meterLaOpinionEnElMap(Opinion opinion, Map<TipoDeOpinion, Integer> opinionesEnMap) {
+		opinionesEnMap.put(opinion.getTipo(), 1);
+		
 	}
+	
+	private TipoDeOpinion tipoMasRepetido(Map<TipoDeOpinion, Integer> opinionesEnMap) {
+	    TipoDeOpinion masRepetido = null;
+	    int maxFrecuencia = 0;
+
+	    for (Map.Entry<TipoDeOpinion, Integer> entry : opinionesEnMap.entrySet()) {
+	        if (entry.getValue() > maxFrecuencia) {
+	            maxFrecuencia = entry.getValue();
+	            masRepetido = entry.getKey();
+	        }
+	    }
+
+	    return masRepetido;
+	}
+
+	private Opinion opinionMasVecesRepetida(Map<TipoDeOpinion, Integer> opinionesEnMap) {
+	    TipoDeOpinion tipo = tipoMasRepetido(opinionesEnMap);
+	    //recorro la lista de opiniones y voy filtrando las opiniones del tipo mas repetido, devuelvo la primera opinion de ese tipo
+	    return opiniones.stream()
+	        .filter(o -> o.getTipo() == tipo)
+	        .findFirst()
+	        .orElse(null);
+	}
+
 
 
 	public void cargarOpinionEnEstadoBasico(Opinion opinion) {
@@ -285,7 +272,6 @@ public class Muestra {
 		if(opinion.esOpinionDeExperto()) {
 			//chequeo que esa opinion no este ya hecha, si esta en este estado es porque ya algun experto anterior publico una opinion
 			if(this.mismaOpinionYaPublicada(opinion)) {
-				System.out.println(this.mismaOpinionYaPublicada(opinion));
 				EstadoVerificado estadoVerificado = new EstadoVerificado();
 				this.cambiarEstado(estadoVerificado);
 				manejadorMuestra.notificar(this);
@@ -308,8 +294,6 @@ public class Muestra {
 	}
 
 	private boolean mismaOpinionYaPublicada(Opinion opinion) {
-		System.out.println(opiniones);
-		System.out.println(opinion.getTipo());
 		return opiniones.stream()
 	            .anyMatch(o -> o.esOpinionDeExperto() && o.getTipo() == opinion.getTipo());
 	}
