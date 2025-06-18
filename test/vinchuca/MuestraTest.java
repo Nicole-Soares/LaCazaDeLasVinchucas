@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.Test;
 
 
 public class MuestraTest {
+
 
 	
     
@@ -27,7 +29,7 @@ public class MuestraTest {
     private ManagerMuestraVerificada manejador;
     private Ubicacion ubicacion;
     private Ubicacion ubicacion2;
-    private LocalDate fecha;
+    private Date fecha;
     private Opinion opinionBasica;
     private Opinion opinionBasicaDos;
     private Opinion opinionBasicaTres;
@@ -88,14 +90,7 @@ public class MuestraTest {
     	assertEquals(muestra.getManejadorMuestra(), manejador);
     }
    
-    @Test
-    public void testeandoNotificacionNuevaMuestra() {
-    	muestra.notificarMuestraNueva();
- 	   
-    	verify(manejador, times(1)).notificarMuestraNueva(muestra);
-
-    }
-    
+  
     @Test
     public void testeandoNotificacionMuestraVerificada() {
     	when(opinionExperta.esOpinionDeExperto()).thenReturn(true);

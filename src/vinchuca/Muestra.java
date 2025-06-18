@@ -11,7 +11,7 @@ public class Muestra {
 
 	private String especieDeVinchuca;
 	private String foto;
-	private LocalDate fechaMuestra;
+	private Date fechaMuestra;
 	private Ubicacion ubicacion;
 	private List<Opinion> opiniones;
 	private Estado estado;
@@ -21,21 +21,9 @@ public class Muestra {
 	
 	
 	
-	/*public Muestra(String especieDeVinchuca, String foto,  LocalDate fechaMuestra, Ubicacion ubicacion,
-			List<Opinion> opiniones, Estado estado, Persona autor, Filtro filtro, ManejadorMuestra manejadorMuestra) {
-		super();
-		this.especieDeVinchuca = especieDeVinchuca;
-		this.foto = foto;
-		this.fechaMuestra = fechaMuestra;
-		this.ubicacion = ubicacion;
-		this.opiniones = opiniones;
-		this.estado = estado;
-		this.autor = autor;
-		this.filtro = filtro;
-		this.manejadorMuestra = manejadorMuestra;
-	}*/
+
 	
-	public Muestra(String especieDeVinchuca, String foto,  LocalDate fechaMuestra, Ubicacion ubicacion, Estado estado, Persona autor, Filtro filtro, ManagerMuestraVerificada manejadorMuestra){
+	public Muestra(String especieDeVinchuca, String foto,  Date fechaMuestra, Ubicacion ubicacion, Estado estado, Persona autor, Filtro filtro, ManagerMuestraVerificada manejadorMuestra){
 		super();
 		this.especieDeVinchuca = especieDeVinchuca;
 		this.foto = foto;
@@ -117,13 +105,13 @@ public class Muestra {
 
 
 
-	public LocalDate getFechaCreacion() {
+	public Date getFechaCreacion() {
 		return fechaMuestra;
 
 	}
 
 
-	public void setFechaMuestra(LocalDate fechaMuestra) {
+	public void setFechaMuestra(Date fechaMuestra) {
 		this.fechaMuestra = fechaMuestra;
 	}
 
@@ -296,6 +284,11 @@ public class Muestra {
 	private boolean mismaOpinionYaPublicada(Opinion opinion) {
 		return opiniones.stream()
 	            .anyMatch(o -> o.esOpinionDeExperto() && o.getTipo() == opinion.getTipo());
+	}
+
+	public String getNombreEstado() {
+
+		return this.estado.nombre();
 	}
 
 	

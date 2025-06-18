@@ -14,4 +14,11 @@ public class EstadoExperto extends Estado {
 		
 	}
 
+	@Override
+	public String nombre() {
+		
+		return "Experto";
+	}
+	
 }
+

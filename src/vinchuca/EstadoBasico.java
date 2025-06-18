@@ -14,4 +14,10 @@ public class EstadoBasico extends Estado{
 		
 	}
 
+	@Override
+	public String nombre() {
+		
+		return "Basico";
+	}
+	
 }

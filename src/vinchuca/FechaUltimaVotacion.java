@@ -7,7 +7,7 @@ public class FechaUltimaVotacion implements TipoFiltro {
 	private Date fecha;
 	
 	public boolean cumple(Muestra muestra) {
-		return muestra.getFechaUltimaVotacion().after(fecha);
+		return muestra.fechaUltimaOpinion().after(fecha);
 	}
 
 }

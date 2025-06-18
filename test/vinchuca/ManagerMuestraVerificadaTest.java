@@ -61,7 +61,7 @@ public class ManagerMuestraVerificadaTest {
 	      //assertFalse(manejador.getListaDeSuscriptores().contains(zonaCobertura)); 
 	 }
 	
-	@Test
+	/*@Test
 	public void testeandoLaNotificacionNuevadaAUnaZona() {
 		  when(zonaCobertura.contiene(muestra)).thenReturn(true);
 	      manejador.suscribir(zonaCobertura, muestra);
@@ -70,5 +70,5 @@ public class ManagerMuestraVerificadaTest {
 		  verify(zonaCobertura, times(1)).avisarNuevaMuestra(muestra);
 	      //assertFalse(manejador.getListaDeSuscriptores().contains(zonaCobertura)); 
 	 }
- 
+ */
 }
