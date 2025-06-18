@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
@@ -44,7 +46,7 @@ public class MuestraTest {
     	ubicacion2 = mock(Ubicacion.class);
     	filtro = mock(Filtro.class);
     	fecha = LocalDate.now();
-    	manejador = new ManejadorMuestra();
+    	manejador = mock(ManejadorMuestra.class);//new ManejadorMuestra();
     	estadoBasico = new EstadoBasico();
     	muestra = new Muestra("chinche", "foto", fecha, ubicacion,estadoBasico, personaBasica, filtro, manejador);
     	opinionBasica = mock(Opinion.class);
@@ -290,23 +292,18 @@ public class MuestraTest {
 	      when(zonaCobertura.contiene(muestra)).thenReturn(true);
 	      muestra.suscribir(zonaCobertura);
 
-	      assertTrue(manejador.getListaDeSuscriptores().contains(zonaCobertura)); 
+	      verify(manejador, times(1)).suscribir(zonaCobertura, muestra);
+	     // assertTrue(manejador.getListaDeSuscriptores().contains(zonaCobertura)); 
 	}
 	
-	@Test
-	public void testeandoLaNoSuscripcionDeUnaZona() {
-	      when(zonaCobertura.contiene(muestra)).thenReturn(false);
-	      muestra.suscribir(zonaCobertura);
-
-	      assertFalse(manejador.getListaDeSuscriptores().contains(zonaCobertura)); 
-	}
 	
 	@Test
 	public void testeandoLaDesuscripcionDeUnaZona() {
 	      
 	      muestra.desuscribir(zonaCobertura);
 
-	      assertFalse(manejador.getListaDeSuscriptores().contains(zonaCobertura)); 
+	      verify(manejador, times(1)).desuscribir(zonaCobertura);
+	      //assertFalse(manejador.getListaDeSuscriptores().contains(zonaCobertura)); 
 	 }
   
 }

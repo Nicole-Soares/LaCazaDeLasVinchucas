@@ -3,6 +3,8 @@ package vinchuca;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +26,7 @@ public class ManejadorMuestraTest {
     
     }
     
-    
+   
     @Test
 	public void testeandoLaSuscripcionDeUnaZona() {
 	      when(zonaCobertura.contiene(muestra)).thenReturn(true);
@@ -44,16 +46,19 @@ public class ManejadorMuestraTest {
 	@Test
 	public void testeandoLaDesuscripcionDeUnaZona() {
 	      
-		manejador.desuscribir(zonaCobertura);
+		 manejador.desuscribir(zonaCobertura);
 
 	      assertFalse(manejador.getListaDeSuscriptores().contains(zonaCobertura)); 
 	 }
 	
 	@Test
 	public void testeandoLaNotificacionDeUnaZona() {
-		manejador.notificar(muestra);
+		  when(zonaCobertura.contiene(muestra)).thenReturn(true);
+	      manejador.suscribir(zonaCobertura, muestra);
+		  manejador.notificar(muestra);
 
-	      assertFalse(manejador.getListaDeSuscriptores().contains(zonaCobertura)); 
+		  verify(zonaCobertura, times(1)).avisarMuestraVerificada(muestra);
+	      //assertFalse(manejador.getListaDeSuscriptores().contains(zonaCobertura)); 
 	 }
-  
+ 
 }

@@ -15,11 +15,6 @@ public class ManejadorMuestra {
 
 
 	
-	public List<ZonaCobertura> getListaDeZonasCobertura() {
-		return listaDeZonasCobertura;
-	}
-
-
 	public void suscribir(ZonaCobertura zona, Muestra muestra) {
 		if (zona.contiene(muestra)) {
 			listaDeZonasCobertura.add(zona);
