@@ -88,6 +88,28 @@ public class MuestraTest {
     	assertEquals(muestra.getManejadorMuestra(), manejador);
     }
    
+    @Test
+    public void testeandoNotificacionNuevaMuestra() {
+    	muestra.notificarMuestraNueva();
+ 	   
+    	verify(manejador, times(1)).notificarMuestraNueva(muestra);
+
+    }
+    
+    @Test
+    public void testeandoNotificacionMuestraVerificada() {
+    	when(opinionExperta.esOpinionDeExperto()).thenReturn(true);
+   	    when(opinionExperta.getTipo()).thenReturn(TipoDeOpinion.VINCHUCA);
+
+   	    when(opinionExpertaDos.esOpinionDeExperto()).thenReturn(true);
+   	    when(opinionExpertaDos.getTipo()).thenReturn(TipoDeOpinion.VINCHUCA);
+
+   	    muestra.cargarOpinion(opinionExperta);    
+   	    muestra.cargarOpinion(opinionExpertaDos);  
+   	   
+   	    verify(manejador, times(1)).notificarMuestraVerificada(muestra);
+
+    }
     
     @Test
     public void testeandoFechaDeLaUltimaOpinion() {

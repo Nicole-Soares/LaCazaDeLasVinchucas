@@ -52,12 +52,22 @@ public class ManejadorMuestraTest {
 	 }
 	
 	@Test
-	public void testeandoLaNotificacionDeUnaZona() {
+	public void testeandoLaNotificacionVerificadaAUnaZona() {
 		  when(zonaCobertura.contiene(muestra)).thenReturn(true);
 	      manejador.suscribir(zonaCobertura, muestra);
-		  manejador.notificar(muestra);
+		  manejador.notificarMuestraVerificada(muestra);
 
 		  verify(zonaCobertura, times(1)).avisarMuestraVerificada(muestra);
+	      //assertFalse(manejador.getListaDeSuscriptores().contains(zonaCobertura)); 
+	 }
+	
+	@Test
+	public void testeandoLaNotificacionNuevadaAUnaZona() {
+		  when(zonaCobertura.contiene(muestra)).thenReturn(true);
+	      manejador.suscribir(zonaCobertura, muestra);
+		  manejador.notificarMuestraNueva(muestra);
+
+		  verify(zonaCobertura, times(1)).avisarNuevaMuestra(muestra);
 	      //assertFalse(manejador.getListaDeSuscriptores().contains(zonaCobertura)); 
 	 }
  

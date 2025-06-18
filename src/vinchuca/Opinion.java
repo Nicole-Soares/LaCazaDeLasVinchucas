@@ -22,26 +22,15 @@ public class Opinion {
 			return tipo;
 		}
 
-	/*	public void setTipo(TipoDeOpinion tipo) {
-			this.tipo = tipo;
-		}*/
-
 		public Date getFechaDeOpinion() {
 			return fechaDeOpinion;
 		}
 
-	/*	public void setFechaDeOpinion(Date fechaDeOpinion) {
-			this.fechaDeOpinion = fechaDeOpinion;
-		}
-*/
+	
 		public Persona getPersona() {
 			return persona;
 		}
 
-	/*	public void setPersona(Persona persona) {
-			this.persona = persona;
-		}*/
-		// lo setter no deberian estar ya que no deberia cambiar esa info (?)
 
 		public Categoria getCategoria() {
 			return categoria;

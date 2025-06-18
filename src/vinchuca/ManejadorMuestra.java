@@ -27,9 +27,16 @@ public class ManejadorMuestra {
 		
 	}
 	
-	public void notificar(Muestra muestra) {
+	public void notificarMuestraVerificada(Muestra muestra) {
 		for(ZonaCobertura zona: listaDeZonasCobertura) {
 			zona.avisarMuestraVerificada(muestra);
+		}
+		
+	}
+	
+	public void notificarMuestraNueva(Muestra muestra) {
+		for(ZonaCobertura zona: listaDeZonasCobertura) {
+			zona.avisarNuevaMuestra(muestra);
 		}
 		
 	}

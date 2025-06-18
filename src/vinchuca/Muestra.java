@@ -274,7 +274,7 @@ public class Muestra {
 			if(this.mismaOpinionYaPublicada(opinion)) {
 				EstadoVerificado estadoVerificado = new EstadoVerificado();
 				this.cambiarEstado(estadoVerificado);
-				manejadorMuestra.notificar(this);
+				manejadorMuestra.notificarMuestraVerificada(this);
 			}
 			this.agregarOpinion(opinion);
 			
@@ -305,6 +305,10 @@ public class Muestra {
 	
 	public void desuscribir(ZonaCobertura zona) {
 		manejadorMuestra.desuscribir(zona);
+	}
+	
+	public void notificarMuestraNueva() {
+		manejadorMuestra.notificarMuestraNueva(this);
 	}
 	
 	
