@@ -7,18 +7,16 @@ public class ManejadorMuestra {
 
 	private List <ZonaCobertura> listaDeZonasCobertura;
 	
-	
-	
-	
-	public ManejadorMuestra(List<ZonaCobertura> listaDeZonasCobertura) {
-		super();
-		this.listaDeZonasCobertura = listaDeZonasCobertura;
-	}
-
 
 	public ManejadorMuestra() {
 		super();
 		this.listaDeZonasCobertura = new ArrayList<ZonaCobertura>();
+	}
+
+
+	
+	public List<ZonaCobertura> getListaDeZonasCobertura() {
+		return listaDeZonasCobertura;
 	}
 
 
@@ -40,6 +38,12 @@ public class ManejadorMuestra {
 		}
 		
 	}
+
+
+	public List<ZonaCobertura> getListaDeSuscriptores() {
+		return listaDeZonasCobertura;
+	}
+
 
 	
 }
