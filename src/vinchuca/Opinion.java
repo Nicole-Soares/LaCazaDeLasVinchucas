@@ -16,7 +16,7 @@ public class Opinion {
 	        this.tipo = tipo;
 	        this.fechaDeOpinion = fecha;
 	        this.persona = persona;
-	        this.categoria = persona.categoria;
+	        this.categoria = persona.getCategoria();
 	    }
 
 		public TipoDeOpinion getTipo() {
