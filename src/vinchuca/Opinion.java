@@ -1,14 +1,15 @@
 package vinchuca;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 public class Opinion {
 	    private TipoDeOpinion tipo;
-	    private Date fechaDeOpinion;
+	    private LocalDate fechaDeOpinion;
 	    private Persona persona;
 	    private Categoria categoria;
 
-	    public Opinion(TipoDeOpinion tipo, Date fecha, Persona persona) {
+	    public Opinion(TipoDeOpinion tipo, LocalDate fecha, Persona persona) {
 	    	if (tipo == null || fecha == null || persona == null) {
 	            throw new IllegalArgumentException("Los valores no pueden ser nulos");
 	        }
@@ -22,7 +23,9 @@ public class Opinion {
 			return tipo;
 		}
 
-		public Date getFechaDeOpinion() {
+
+		public LocalDate getFechaDeOpinion() {
+
 			return fechaDeOpinion;
 		}
 

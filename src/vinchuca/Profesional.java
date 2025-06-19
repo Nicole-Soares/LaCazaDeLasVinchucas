@@ -4,17 +4,18 @@ import java.util.List;
 
 public class Profesional extends Persona{
 
-	public Profesional(int cantidadDeEnvios, int cantidadDeRevisiones) {
-		super(cantidadDeEnvios, cantidadDeRevisiones);
+	public Profesional() {
+		super();
 		this.categoria= new Experto();
 		
 	}
 
-	public Profesional(int cantidadDeEnvios, int cantidadDeRevisiones, List<Opinion> opinionesEmitidas, List<Muestra> muestraEmitida) {
-		super(cantidadDeEnvios, cantidadDeRevisiones, opinionesEmitidas,muestraEmitida );
+	public Profesional(List<Opinion> opinionesEmitidas, List<Muestra> muestraEmitida) {
+		super(opinionesEmitidas,muestraEmitida );
 		this.categoria= new Experto();
 		
 	}
+	
 	
 	@Override
 	public void cambiarCategoria(Categoria categoria) {
@@ -22,4 +23,5 @@ public class Profesional extends Persona{
 	}
 	
 	
+
 }

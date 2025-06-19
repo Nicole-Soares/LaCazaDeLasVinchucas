@@ -1,7 +1,6 @@
 package vinchuca;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +10,7 @@ public class Muestra {
 
 	private String especieDeVinchuca;
 	private String foto;
-	private Date fechaMuestra;
+	private LocalDate fechaMuestra;
 	private Ubicacion ubicacion;
 	private List<Opinion> opiniones;
 	private Estado estado;
@@ -20,10 +19,8 @@ public class Muestra {
 	private ManagerMuestraVerificada manejadorMuestra;
 	
 	
-	
 
-	
-	public Muestra(String especieDeVinchuca, String foto,  Date fechaMuestra, Ubicacion ubicacion, Estado estado, Persona autor, Filtro filtro, ManagerMuestraVerificada manejadorMuestra){
+	public Muestra(String especieDeVinchuca, String foto, LocalDate fechaMuestra, Ubicacion ubicacion, Estado estado, Persona autor, ManagerMuestraVerificada manejadorMuestra ) {
 		super();
 		this.especieDeVinchuca = especieDeVinchuca;
 		this.foto = foto;
@@ -32,7 +29,6 @@ public class Muestra {
 		this.opiniones = new ArrayList<Opinion>();
 		this.estado = estado;
 		this.autor = autor;
-		this.filtro = filtro;
 		this.manejadorMuestra = manejadorMuestra;
 	}
 
@@ -105,13 +101,13 @@ public class Muestra {
 
 
 
-	public Date getFechaCreacion() {
+	public LocalDate getFechaCreacion() {
 		return fechaMuestra;
 
 	}
 
 
-	public void setFechaMuestra(Date fechaMuestra) {
+	public void setFechaMuestra(LocalDate fechaMuestra) {
 		this.fechaMuestra = fechaMuestra;
 	}
 
@@ -125,7 +121,7 @@ public class Muestra {
 		this.manejadorMuestra = manejadorMuestra;
 	}
 
-	public Date fechaUltimaOpinion() {
+	public LocalDate fechaUltimaOpinion() {
 		 Opinion ultimoElemento = opiniones.get(opiniones.size() - 1);
 		 return ultimoElemento.getFechaDeOpinion();
 		 

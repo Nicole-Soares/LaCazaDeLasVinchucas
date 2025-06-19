@@ -1,19 +1,19 @@
 package vinchuca;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class FiltroFechaMuestra implements TipoFiltro {
 
-	private Date fecha;
+	private LocalDate fecha;
 	
-	public FiltroFechaMuestra(Date fecha) {
-		this.fecha = fecha;
+	public FiltroFechaMuestra(LocalDate fechaFiltro) {
+		this.fecha = fechaFiltro;
 	}
 	
 	
 	public boolean cumple(Muestra muestra) {
 		
-		return muestra.getFechaCreacion().after(fecha);
+		return muestra.getFechaCreacion().isAfter(fecha);
 	}
 
 }

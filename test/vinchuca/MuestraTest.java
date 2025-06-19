@@ -25,11 +25,11 @@ public class MuestraTest {
     private Estado estadoBasico;
     private Persona personaBasica;
     private Persona personaExperta;
-    private Filtro filtro;
+    //private Filtro filtro;
     private ManagerMuestraVerificada manejador;
     private Ubicacion ubicacion;
     private Ubicacion ubicacion2;
-    private Date fecha;
+    private LocalDate fecha;
     private Opinion opinionBasica;
     private Opinion opinionBasicaDos;
     private Opinion opinionBasicaTres;
@@ -46,11 +46,11 @@ public class MuestraTest {
     	personaExperta = mock(Persona.class);
     	ubicacion = mock(Ubicacion.class);
     	ubicacion2 = mock(Ubicacion.class);
-    	filtro = mock(Filtro.class);
+    	//filtro = mock(Filtro.class);
     	fecha = LocalDate.now();
     	manejador = mock(ManagerMuestraVerificada.class);//new ManejadorMuestra();
     	estadoBasico = new EstadoBasico();
-    	muestra = new Muestra("chinche", "foto", fecha, ubicacion,estadoBasico, personaBasica, filtro, manejador);
+    	muestra = new Muestra("chinche", "foto", fecha, ubicacion,estadoBasico, personaBasica, manejador);
     	opinionBasica = mock(Opinion.class);
     	opinionBasicaDos = mock(Opinion.class);
     	opinionBasicaTres = mock(Opinion.class);
@@ -68,7 +68,7 @@ public class MuestraTest {
     	assertEquals(muestra.getUbicacion(), ubicacion);
     	assertEquals(muestra.getAutor(), personaBasica);
     	assertEquals(muestra.getFechaCreacion(), fecha);
-    	assertEquals(muestra.getFiltro(), filtro);
+    	//assertEquals(muestra.getFiltro(), filtro);
     	assertEquals(muestra.getManejadorMuestra(), manejador);
     }
     
@@ -84,8 +84,8 @@ public class MuestraTest {
     	assertEquals(muestra.getAutor(), personaExperta);
     	muestra.setFechaMuestra(fecha);
     	assertEquals(muestra.getFechaCreacion(), fecha);
-    	muestra.setFiltro(filtro);
-    	assertEquals(muestra.getFiltro(), filtro);
+    	//muestra.setFiltro(filtro);
+    	//assertEquals(muestra.getFiltro(), filtro);
     	muestra.setManejadorMuestra(manejador);
     	assertEquals(muestra.getManejadorMuestra(), manejador);
     }
@@ -109,13 +109,11 @@ public class MuestraTest {
     @Test
     public void testeandoFechaDeLaUltimaOpinion() {
     	
-    	LocalDate localDate = LocalDate.of(2024, 3, 15); // marzo = 3 (acá sí)
-    	java.util.Date fecha = java.sql.Date.valueOf(localDate);
     	
-    	LocalDate localDate2 = LocalDate.of(2024, 3, 15); // marzo = 3 (acá sí)
-    	java.util.Date fecha2 = java.sql.Date.valueOf(localDate2);
+    	LocalDate fecha1 = LocalDate.of(2024, 3, 15);
+    	LocalDate fecha2 = LocalDate.of(2024, 3, 15);
     	
-    	when(opinionBasica.getFechaDeOpinion()).thenReturn(fecha);
+    	when(opinionBasica.getFechaDeOpinion()).thenReturn(fecha1);
         when(opinionExperta.getFechaDeOpinion()).thenReturn(fecha2);
         
         muestra.cargarOpinion(opinionBasica);
