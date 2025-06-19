@@ -38,11 +38,12 @@ public class OpinionTest {
 
 	    @Test
 	    void testeandoGetters() {
+	    	when(mockPersona.getCategoria()).thenReturn(mockCategoria);
 	    	opinion = new Opinion(tipoDeOpinion, fecha, mockPersona);
 	    	assertEquals(opinion.getTipo(), TipoDeOpinion.VINCHUCA); // Ahora esto debe pasar si lo configuraste bien en setUp
         	assertEquals(opinion.getFechaDeOpinion(), fecha);
         	assertEquals(opinion.getPersona(), mockPersona);
-        	//assertEquals(opinion.getCategoria(), mockCategoria);
+        	assertEquals(opinion.getCategoria(), mockCategoria);
 	    }
 
 	  
