@@ -53,6 +53,19 @@ public class Muestra {
 	}
 
 
+	
+	public Estado getEstado() {
+		return estado;
+	}
+
+	
+
+	public void setEstado(Estado estado) {
+		this.estado = estado;
+	}
+
+
+
 	public List<Opinion> getOpiniones() {
 		return opiniones;
 	}
@@ -72,21 +85,6 @@ public class Muestra {
 		this.autor = autor;
 	}
 
-
-	public Filtro getFiltro() {
-		return filtro;
-	}
-
-
-	public void setFiltro(Filtro filtro) {
-		this.filtro = filtro;
-	}
-
-
-
-	public void setEstado(Estado estado) {
-		this.estado = estado;
-	}
 
 
 	public String getFoto() {
@@ -277,15 +275,14 @@ public class Muestra {
 		
 	}
 
+	
+
 	private boolean mismaOpinionYaPublicada(Opinion opinion) {
 		return opiniones.stream()
 	            .anyMatch(o -> o.esOpinionDeExperto() && o.getTipo() == opinion.getTipo());
 	}
 
-	public String getNombreEstado() {
-
-		return this.estado.nombre();
-	}
+	
 
 	
 	public void suscribir(ZonaCobertura zona) {

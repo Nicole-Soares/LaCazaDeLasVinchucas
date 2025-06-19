@@ -7,7 +7,7 @@ public class NivelDeVerificacion implements TipoFiltro {
 
 	public boolean cumple(Muestra muestra) {
 		
-		return nivel == muestra.getNombreEstado();
+		return nivel == muestra.getEstado().nombre();
 	}
 
 	public NivelDeVerificacion(String nivel) {
