@@ -26,7 +26,7 @@ public class MuestraTest {
     private Persona personaBasica;
     private Persona personaExperta;
     //private Filtro filtro;
-    private ManagerMuestraVerificada manejador;
+    private ManejadorMuestraVerificada manejador;
     private Ubicacion ubicacion;
     private Ubicacion ubicacion2;
     private LocalDate fecha;
@@ -48,7 +48,7 @@ public class MuestraTest {
     	ubicacion2 = mock(Ubicacion.class);
     	//filtro = mock(Filtro.class);
     	fecha = LocalDate.now();
-    	manejador = mock(ManagerMuestraVerificada.class);//new ManejadorMuestra();
+    	manejador = mock(ManejadorMuestraVerificada.class);//new ManejadorMuestra();
     	estadoBasico = new EstadoBasico();
     	muestra = new Muestra("chinche", "foto", fecha, ubicacion,estadoBasico, personaBasica, manejador);
     	opinionBasica = mock(Opinion.class);

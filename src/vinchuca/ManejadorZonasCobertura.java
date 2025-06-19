@@ -24,4 +24,10 @@ public class ManejadorZonasCobertura {
 	public List<ZonaCobertura> getZonasCobertura(){
 		return this.zonasDeCobertura;
 	}
+	public void notificarMuestraNueva(Muestra muestra) {
+		for(ZonaCobertura zona : zonasDeCobertura) {
+			zona.avisarNuevaMuestra(muestra);
+		}
+		
+	}
 }

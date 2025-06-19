@@ -1,14 +1,15 @@
 package vinchuca;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManagerMuestraVerificada {
+public class ManejadorMuestraVerificada {
 
 	private List <ZonaCobertura> listaDeZonasCobertura;
 	
 
-	public ManagerMuestraVerificada() {
+	public ManejadorMuestraVerificada() {
 		super();
 		this.listaDeZonasCobertura = new ArrayList<ZonaCobertura>();
 	}
@@ -34,13 +35,6 @@ public class ManagerMuestraVerificada {
 		
 	}
 	
-	/*public void notificarMuestraNueva(Muestra muestra) {
-		for(ZonaCobertura zona: listaDeZonasCobertura) {
-			zona.avisarNuevaMuestra(muestra);
-		}
-		
-	}
-*/
 
 	public List<ZonaCobertura> getListaDeSuscriptores() {
 		return listaDeZonasCobertura;

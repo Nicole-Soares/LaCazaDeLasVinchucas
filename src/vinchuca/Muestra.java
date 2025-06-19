@@ -15,12 +15,11 @@ public class Muestra {
 	private List<Opinion> opiniones;
 	private Estado estado;
 	private Persona autor;
-	private Filtro filtro;
-	private ManagerMuestraVerificada manejadorMuestra;
+	private ManejadorMuestraVerificada manejadorMuestra;
 	
 	
 
-	public Muestra(String especieDeVinchuca, String foto, LocalDate fechaMuestra, Ubicacion ubicacion, Estado estado, Persona autor, ManagerMuestraVerificada manejadorMuestra ) {
+	public Muestra(String especieDeVinchuca, String foto, LocalDate fechaMuestra, Ubicacion ubicacion, Estado estado, Persona autor, ManejadorMuestraVerificada manejadorMuestra ) {
 		super();
 		this.especieDeVinchuca = especieDeVinchuca;
 		this.foto = foto;
@@ -111,11 +110,11 @@ public class Muestra {
 
 	
 
-	public ManagerMuestraVerificada getManejadorMuestra() {
+	public ManejadorMuestraVerificada getManejadorMuestra() {
 		return manejadorMuestra;
 	}
 
-	public void setManejadorMuestra(ManagerMuestraVerificada manejadorMuestra) {
+	public void setManejadorMuestra(ManejadorMuestraVerificada manejadorMuestra) {
 		this.manejadorMuestra = manejadorMuestra;
 	}
 

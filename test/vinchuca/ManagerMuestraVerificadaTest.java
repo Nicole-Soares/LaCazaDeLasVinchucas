@@ -14,13 +14,13 @@ public class ManagerMuestraVerificadaTest {
 	
 
     private Muestra muestra;
-    private ManagerMuestraVerificada manejador;
+    private ManejadorMuestraVerificada manejador;
     private ZonaCobertura zonaCobertura;
     
    
     @BeforeEach
     public void setup(){
-    	manejador = new ManagerMuestraVerificada();
+    	manejador = new ManejadorMuestraVerificada();
     	muestra = mock(Muestra.class);
     	zonaCobertura = mock(ZonaCobertura.class);
     
