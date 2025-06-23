@@ -6,10 +6,10 @@ import java.time.LocalDate;
 public class Opinion {
 	    private TipoDeOpinion tipo;
 	    private LocalDate fechaDeOpinion;
-	    private Persona persona;
-	    private Categoria categoria;
+	    private Usuario persona;
+	    private CategoriaUsuario categoria;
 
-	    public Opinion(TipoDeOpinion tipo, LocalDate fecha, Persona persona) {
+	    public Opinion(TipoDeOpinion tipo, LocalDate fecha, Usuario persona) {
 	    	
 	        this.tipo = tipo;
 	        this.fechaDeOpinion = fecha;
@@ -28,12 +28,12 @@ public class Opinion {
 		}
 
 	
-		public Persona getPersona() {
+		public Usuario getPersona() {
 			return persona;
 		}
 
 
-		public Categoria getCategoria() {
+		public CategoriaUsuario getCategoria() {
 			return categoria;
 		}
 

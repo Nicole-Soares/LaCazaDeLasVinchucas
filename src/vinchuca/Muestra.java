@@ -14,12 +14,12 @@ public class Muestra {
 	private Ubicacion ubicacion;
 	private List<Opinion> opiniones;
 	private Estado estado;
-	private Persona autor;
+	private Usuario autor;
 	private ManejadorMuestraVerificada manejadorMuestra;
 	
 	
 
-	public Muestra(String especieDeVinchuca, String foto, LocalDate fechaMuestra, Ubicacion ubicacion, Estado estado, Persona autor, ManejadorMuestraVerificada manejadorMuestra ) {
+	public Muestra(String especieDeVinchuca, String foto, LocalDate fechaMuestra, Ubicacion ubicacion, Estado estado, Usuario autor, ManejadorMuestraVerificada manejadorMuestra ) {
 		super();
 		this.especieDeVinchuca = especieDeVinchuca;
 		this.foto = foto;
@@ -75,12 +75,12 @@ public class Muestra {
 		
 	}
 
-	public Persona getAutor() {
+	public Usuario getAutor() {
 		return autor;
 	}
 
 
-	public void setAutor(Persona autor) {
+	public void setAutor(Usuario autor) {
 		this.autor = autor;
 	}
 
@@ -291,10 +291,17 @@ public class Muestra {
 	public void desuscribir(ZonaCobertura zona) {
 		manejadorMuestra.desuscribir(zona);
 	}
+
+
+
+	public boolean yaOpino(Usuario usuario) {
+		  // Itera sobre las opiniones y verifica si alguna fue emitida por el usuario dado
+		  return this.opiniones.stream()
+		             .anyMatch(o -> o.getPersona().equals(usuario)); 
+		   
+	}
 	
-	/*public void notificarMuestraNueva() {
-		manejadorMuestra.notificarMuestraNueva(this);
-	}*/
+	
 	
 	
 }

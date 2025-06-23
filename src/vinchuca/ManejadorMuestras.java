@@ -24,7 +24,7 @@ public class ManejadorMuestras {
 
 
 
-	public void agregarUnaMuestra(Muestra muestra) {
+	public void agregarUnaMuestra(Muestra muestra) { // es privado pero si pongo package no me lo toma el eclipse
 		this.listaDeMuestras.add(muestra);
 	}
 
@@ -32,7 +32,7 @@ public class ManejadorMuestras {
 
 
 	public Muestra crearYRegistrarMuestra(String especieDeVinchuca, String foto, LocalDate fechaMuestra,
-			Ubicacion ubicacion, Estado estado, Persona autor, ManejadorMuestraVerificada manejadorMuestra) {
+			Ubicacion ubicacion, Estado estado, Usuario autor, ManejadorMuestraVerificada manejadorMuestra) {
 		
 		Muestra muestraNueva = new Muestra( especieDeVinchuca,  foto,  fechaMuestra, ubicacion,  estado,  autor,  manejadorMuestra);
 		this.agregarUnaMuestra(muestraNueva);

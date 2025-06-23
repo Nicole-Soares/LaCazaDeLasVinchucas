@@ -23,8 +23,8 @@ public class MuestraTest {
     
     private Muestra muestra;
     private Estado estadoBasico;
-    private Persona personaBasica;
-    private Persona personaExperta;
+    private Usuario personaBasica;
+    private Usuario personaExperta;
     //private Filtro filtro;
     private ManejadorMuestraVerificada manejador;
     private Ubicacion ubicacion;
@@ -42,8 +42,8 @@ public class MuestraTest {
     @BeforeEach
     public void setup(){
     	
-    	personaBasica = mock(Persona.class);
-    	personaExperta = mock(Persona.class);
+    	personaBasica = mock(Usuario.class);
+    	personaExperta = mock(Usuario.class);
     	ubicacion = mock(Ubicacion.class);
     	ubicacion2 = mock(Ubicacion.class);
     	//filtro = mock(Filtro.class);

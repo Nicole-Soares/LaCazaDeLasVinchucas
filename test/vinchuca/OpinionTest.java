@@ -20,8 +20,8 @@ import org.junit.jupiter.api.Test;
 public class OpinionTest {
 
 	    private TipoDeOpinion tipoDeOpinion;
-	    private Persona mockPersona;
-	    private Categoria mockCategoria; 
+	    private Usuario mockPersona;
+	    private CategoriaUsuario mockCategoria; 
 	    private Opinion opinion;
 	    private LocalDate fecha;
 
@@ -29,8 +29,8 @@ public class OpinionTest {
 	    void setUp() {
 	       
 	        tipoDeOpinion = TipoDeOpinion.VINCHUCA;
-	        mockPersona = mock(Persona.class);
-	        mockCategoria = mock(Categoria.class);
+	        mockPersona = mock(Usuario.class);
+	        mockCategoria = mock(CategoriaBasico.class);
 	        fecha = LocalDate.of(2023, 1, 15); 
 	       
 	      
@@ -76,7 +76,7 @@ public class OpinionTest {
 	    @Test
 	    void testEsOpinionDeExpertoNoSeVeAfectadaPorCambioPosteriorDeCategoriaDePersona() {
 	    
-	    	Categoria mockCategoriaExperto = mock(Categoria.class);
+	    	CategoriaUsuario mockCategoriaExperto = mock(CategoriaUsuario.class);
 	        when(mockCategoriaExperto.esExperto()).thenReturn(true);
 
 	        // 2. Configurar mockPersona para que, al inicio, devuelva la Categoria Experto (A)
@@ -85,7 +85,7 @@ public class OpinionTest {
 	        
 	        Opinion opinion = new Opinion(tipoDeOpinion, fecha, mockPersona); 
 	        
-	        Categoria mockCategoriaNoExperto = mock(Categoria.class);
+	        CategoriaUsuario mockCategoriaNoExperto = mock(CategoriaUsuario.class);
 	        when(mockCategoriaNoExperto.esExperto()).thenReturn(false);
 
 	        

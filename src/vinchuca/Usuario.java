@@ -5,27 +5,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Persona {
+public class Usuario {
 
 
 	List<Opinion> opinionesEmitidas;
 	List<Muestra> muestrasEmitidas;
-	Categoria categoria;
+	CategoriaUsuario categoria;
 	
 	
-	public Persona(List<Opinion> opinionesEmitidas,
-			List<Muestra> muestrasEmitidas) {
-		super();
-		this.opinionesEmitidas = opinionesEmitidas;
-		this.muestrasEmitidas = muestrasEmitidas;
-		this.categoria = new Basico();
-	}
-	
-	public Persona() {
+	public Usuario() {
 		super();
 		this.opinionesEmitidas = new ArrayList<>();
 		this.muestrasEmitidas = new ArrayList<>();
-		this.categoria = new Basico();
+		this.categoria = new CategoriaBasico();
 	}
 
 
@@ -48,15 +40,25 @@ public class Persona {
 	
 	
 	
-	public Categoria getCategoria() {
+	public CategoriaUsuario getCategoria() {
 		return categoria;
 	}
 
-	public void cambiarCategoria(Categoria categoria) {
+	public void cambiarCategoria(CategoriaUsuario categoria) {
 		this.categoria = categoria;
 	}
 
 	public void opinarSobre(Muestra muestra, Opinion opinion) {
+		//no puede opinar mas de 1 vez de una muestra
+		if (muestra.yaOpino(this)) { 
+            System.out.println("Error: Ya ha opinado sobre esta muestra.");
+            return;
+		}
+		//no puede opinar sobre su muestra
+		 if (muestra.getAutor().equals(this)) { 
+	            System.out.println("Error: No se puede opinar sobre la propia muestra.");
+	            return;// para que salga
+	        }
 		muestra.cargarOpinion(opinion);
 		this.opinionesEmitidas.add(opinion);
 		this.verificarCategoria();
@@ -76,19 +78,19 @@ public class Persona {
 	}
 
 	public void verificarCategoria() {
+		// Ultimos 30 dias
 		LocalDate fechaLimite = LocalDate.now().minusDays(30);
 		
-		long cantidadDeOpinionesValidas = this.opinionesEmitidas.stream()
-											.filter(o -> !o.getFechaDeOpinion().isBefore(fechaLimite))
+		
+		long cantidadDeOpiniones = this.opinionesEmitidas.stream()
+											.filter(o -> o.getFechaDeOpinion().isAfter(fechaLimite))
 											.count();
 		
-		long cantidadDeMuestrasEnviadasValidas = this.muestrasEmitidas.stream()
-													.filter(m -> !m.getFechaCreacion().isBefore(fechaLimite))
+		long cantidadDeMuestrasEnviadas = this.muestrasEmitidas.stream()
+													.filter(m -> m.getFechaCreacion().isAfter(fechaLimite))
 													.count();
 		
-		if (cantidadDeOpinionesValidas > 20 && cantidadDeMuestrasEnviadasValidas > 10) {
-			this.cambiarCategoria(new Experto());
-		}
+		this.categoria.verificarCategoria(this,cantidadDeOpiniones, cantidadDeMuestrasEnviadas);
 	}
 	
 	

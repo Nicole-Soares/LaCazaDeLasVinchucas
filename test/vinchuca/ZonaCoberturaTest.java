@@ -10,7 +10,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class ZonaCoberturaTest {
+public class ZonaCoberturaTest {
+	
     private ZonaCobertura zona;
     private Ubicacion epicentro;
     private Muestra muestraDentro;

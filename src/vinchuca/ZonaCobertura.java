@@ -22,7 +22,7 @@ public class ZonaCobertura implements Sujeto{
     public List<ZonaCobertura> zonasQueSolapan(ManejadorZonasCobertura manejador){
         return manejador.zonasQueSolapan(this);
     }
-    private void addMuestra(Muestra muestra) {
+    public void addMuestra(Muestra muestra) {
             this.muestras.add(muestra);
     }
     public boolean contiene(Muestra muestra) {
