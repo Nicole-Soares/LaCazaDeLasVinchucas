@@ -1,6 +1,5 @@
 package vinchuca;
 
-import java.util.List;
 
 public class UsuarioProfesional extends Usuario{
 

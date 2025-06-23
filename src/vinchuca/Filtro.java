@@ -13,7 +13,7 @@ public class Filtro {
 		this.muestras = muestras;
 	}
 	
-	public List<Muestra> aplicarFiltro(Filtro filtro) {
+	public List<Muestra> aplicarFiltro() {
         return muestras.stream()
                        .filter(m -> filtroAUsar.cumple(m))
                        .collect(Collectors.toList());

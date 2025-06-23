@@ -8,7 +8,6 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -56,8 +55,8 @@ public class UsuarioTest {
 	@Test
 	public void testPersonaEnviaUnaMuestraYOpina() {
 		
-		List<Opinion> opiniones = new ArrayList<>();
-		List<Muestra> muestras = new ArrayList<>();
+		//List<Opinion> opiniones = new ArrayList<>();
+		//List<Muestra> muestras = new ArrayList<>();
 		Usuario autorMuestra = new Usuario();
 		Opinion o = mock(Opinion.class);
 		Muestra m = mock(Muestra.class);
@@ -88,7 +87,7 @@ public class UsuarioTest {
 		Muestra m = mock(Muestra.class);
 		
 		UsuarioProfesional p = new UsuarioProfesional();
-		UsuarioProfesional p2 = new UsuarioProfesional();
+		//UsuarioProfesional p2 = new UsuarioProfesional();
 		
 		
 		assertTrue(p.esExperto());

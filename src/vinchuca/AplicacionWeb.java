@@ -1,6 +1,9 @@
 package vinchuca;
 
+
 import java.time.LocalDate;
+import java.util.List;
+
 
 public class AplicacionWeb {
 
@@ -43,5 +46,14 @@ public class AplicacionWeb {
 	public UsuarioProfesional crearYRegistrarUsuariosProfesionales() {
 		UsuarioProfesional usuarioProfesional = manejadorUsuarios.crearYRegistrarUsuariosProfesionales();
 		return usuarioProfesional;
+	}
+	
+	public List<Muestra> getMuestras(){
+		return manejadorDeMuestra.getListaDeMuestras();
+	}
+	
+	public List<Muestra> filtrarMuestras(Filtro filtro){
+		
+		return filtro.aplicarFiltro();
 	}
 }

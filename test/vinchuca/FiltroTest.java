@@ -29,7 +29,7 @@ public class FiltroTest {
 		
 		filtro.setFiltro(tipoFiltro);
 		
-		filtro.aplicarFiltro(filtro);
+		filtro.aplicarFiltro();
 		
 		verify(tipoFiltro).cumple(m);
 		
@@ -77,17 +77,18 @@ public class FiltroTest {
 	}
 	
 	
-	/*@Test
+	@Test
 	void testFiltroNivelDeVerificacion() {
 		
-		Muestra m = mock(Muestra.class);                                                                                                                                                                                                                                                                   ;
+		Muestra m = mock(Muestra.class);  
+		EstadoBasico e = mock(EstadoBasico.class);    ;
 		NivelDeVerificacion filtro = new NivelDeVerificacion("Basico");
-		
+		when(m.getEstado()).thenReturn(e);
 		when(m.getEstado().nombre()).thenReturn("Basico");
 		
 		assertTrue(filtro.cumple(m));
 		
-	}*/
+	}
 	
 	@Test
 	void testFiltroFechaMuestra() {
