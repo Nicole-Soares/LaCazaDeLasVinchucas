@@ -9,8 +9,9 @@ public class Filtro {
 	private TipoFiltro filtroAUsar;
 	
 	
-	public Filtro(List<Muestra> muestras) {
+	public Filtro(List<Muestra> muestras, TipoFiltro tipo) {
 		this.muestras = muestras;
+		this.filtroAUsar = tipo;
 	}
 	
 	public List<Muestra> aplicarFiltro() {

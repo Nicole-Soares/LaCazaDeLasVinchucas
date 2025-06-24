@@ -26,8 +26,8 @@ public class AplicacionWeb {
 		return zonaNueva;
 	}
 	
-	public Muestra crearYRegistrarMuestra(String especieDeVinchuca, String foto, LocalDate fechaMuestra, Ubicacion ubicacion, Estado estado, Usuario autor, ManejadorMuestraVerificada manejadorMuestra) {
-		Muestra muestra = manejadorDeMuestra.crearYRegistrarMuestra(especieDeVinchuca, foto, fechaMuestra, ubicacion, estado, autor, manejadorMuestra);
+	public Muestra crearYRegistrarMuestra(String especieDeVinchuca, String foto, LocalDate fechaMuestra, Ubicacion ubicacion,  Usuario autor, ManejadorMuestraVerificada manejadorMuestra) {
+		Muestra muestra = manejadorDeMuestra.crearYRegistrarMuestra(especieDeVinchuca, foto, fechaMuestra, ubicacion, autor, manejadorMuestra);
 		manejadorZona.notificarMuestraNueva(muestra);
 		return muestra;
 	}

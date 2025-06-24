@@ -14,7 +14,6 @@ public class ManejadorMuestraTest {
     private Muestra muestraMock1;
     private Muestra muestraMock2;
     private Ubicacion ubicacionMock;
-    private Estado estadoMock;
     private Usuario autorMock;
     private ManejadorMuestraVerificada manejadorMuestraVerificadaMock;
 
@@ -27,7 +26,6 @@ public class ManejadorMuestraTest {
         muestraMock1 = mock(Muestra.class);
         muestraMock2 = mock(Muestra.class);
         ubicacionMock = mock(Ubicacion.class);
-        estadoMock = mock(Estado.class);
         autorMock = mock(Usuario.class);
         manejadorMuestraVerificadaMock = mock(ManejadorMuestraVerificada.class);
     }
@@ -72,7 +70,7 @@ public class ManejadorMuestraTest {
 
         // Exercise: Llama al método a testear
         Muestra nuevaMuestra = manejadorMuestras.crearYRegistrarMuestra(
-            especie, foto, fecha, ubicacionMock, estadoMock, autorMock, manejadorMuestraVerificadaMock
+            especie, foto, fecha, ubicacionMock, autorMock, manejadorMuestraVerificadaMock
         );
 
         // Verify:

@@ -24,8 +24,8 @@ public class FiltroTest {
 	void testFiltroCreacion() {
 		Muestra m = mock(Muestra.class);
 		List<Muestra> muestras = Arrays.asList(m);                                                                                                                                                                                                                                                                          ;
-		Filtro filtro = new Filtro(muestras);
 		TipoFiltro tipoFiltro = mock(FiltroFechaMuestra.class);
+		Filtro filtro = new Filtro(muestras, tipoFiltro);
 		
 		filtro.setFiltro(tipoFiltro);
 		

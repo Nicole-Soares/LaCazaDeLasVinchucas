@@ -170,7 +170,7 @@ public class UsuarioTest {
         // Agrego opinion sin verificar
         persona.opinarSobre(muestraReciente, opinionReciente);
         
-        
+        assertEquals("Error: No se puede opinar sobre la propia muestra.", outputStreamCaptor.toString().trim());
 	}
 	
 	@Test

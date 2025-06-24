@@ -32,9 +32,10 @@ public class ManejadorMuestras {
 
 
 	public Muestra crearYRegistrarMuestra(String especieDeVinchuca, String foto, LocalDate fechaMuestra,
-			Ubicacion ubicacion, Estado estado, Usuario autor, ManejadorMuestraVerificada manejadorMuestra) {
+			Ubicacion ubicacion, Usuario autor, ManejadorMuestraVerificada manejadorMuestra) {
 		
-		Muestra muestraNueva = new Muestra( especieDeVinchuca,  foto,  fechaMuestra, ubicacion,  estado,  autor,  manejadorMuestra);
+		Estado estadoBasico = new EstadoBasico();
+		Muestra muestraNueva = new Muestra( especieDeVinchuca,  foto,  fechaMuestra, ubicacion,  estadoBasico,  autor,  manejadorMuestra);
 		this.agregarUnaMuestra(muestraNueva);
 		return (muestraNueva);
 		
