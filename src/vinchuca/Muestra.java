@@ -255,6 +255,7 @@ public class Muestra {
 			if(this.mismaOpinionYaPublicada(opinion)) {
 				EstadoVerificado estadoVerificado = new EstadoVerificado();
 				this.cambiarEstado(estadoVerificado);
+				this.agregarOpinion(opinion);
 				manejadorMuestra.notificarMuestraVerificada(this);
 			}
 			this.agregarOpinion(opinion);
