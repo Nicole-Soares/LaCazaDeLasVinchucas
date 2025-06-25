@@ -81,9 +81,7 @@ public class ManejadorMuestraTest {
         assertTrue(manejadorMuestras.getListaDeMuestras().contains(nuevaMuestra));
         assertEquals(1, manejadorMuestras.getListaDeMuestras().size());
 
-        // Aunque Muestra es un mock en el setup, `crearYRegistrarMuestra` crea una instancia real de Muestra.
-        // Podríamos verificar los atributos de `nuevaMuestra` si tuviéramos acceso a ellos (requeriría que Muestra tuviera getters para estos).
-        // Sin embargo, el principal objetivo aquí es verificar que la muestra se crea y se agrega a la lista.
+       
     }
     
     @Test
@@ -99,7 +97,7 @@ public class ManejadorMuestraTest {
         assertEquals(2, listaObtenida.size());
         assertTrue(listaObtenida.contains(muestraMock1));
         assertTrue(listaObtenida.contains(muestraMock2));
-        // Asegúrate de que es la misma instancia de lista, no una copia
+        
         assertSame(manejadorMuestras.getListaDeMuestras(), listaObtenida);
     }
 }
