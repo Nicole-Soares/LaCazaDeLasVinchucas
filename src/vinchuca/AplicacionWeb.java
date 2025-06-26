@@ -54,6 +54,7 @@ public class AplicacionWeb {
 	
 	public List<Muestra> filtrarMuestras(Filtro filtro){
 		
-		return filtro.aplicarFiltro();
+		List<Muestra> muestras = manejadorDeMuestra.getListaDeMuestras();
+		return filtro.aplicarFiltro(muestras);
 	}
 }

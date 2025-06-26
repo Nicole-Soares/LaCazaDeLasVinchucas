@@ -25,11 +25,11 @@ public class FiltroTest {
 		Muestra m = mock(Muestra.class);
 		List<Muestra> muestras = Arrays.asList(m);                                                                                                                                                                                                                                                                          ;
 		TipoFiltro tipoFiltro = mock(FiltroFechaMuestra.class);
-		Filtro filtro = new Filtro(muestras, tipoFiltro);
+		Filtro filtro = new Filtro( tipoFiltro);
 		
 		filtro.setFiltro(tipoFiltro);
 		
-		filtro.aplicarFiltro();
+		filtro.aplicarFiltro(muestras);
 		
 		verify(tipoFiltro).cumple(m);
 		

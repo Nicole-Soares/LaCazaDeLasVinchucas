@@ -5,16 +5,15 @@ import java.util.stream.Collectors;
 
 public class Filtro {
 	
-	private List<Muestra> muestras;
+	
 	private TipoFiltro filtroAUsar;
 	
 	
-	public Filtro(List<Muestra> muestras, TipoFiltro tipo) {
-		this.muestras = muestras;
+	public Filtro( TipoFiltro tipo) {
 		this.filtroAUsar = tipo;
 	}
 	
-	public List<Muestra> aplicarFiltro() {
+	public List<Muestra> aplicarFiltro(List<Muestra> muestras) {
         return muestras.stream()
                        .filter(m -> filtroAUsar.cumple(m))
                        .collect(Collectors.toList());

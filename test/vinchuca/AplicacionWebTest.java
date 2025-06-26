@@ -117,9 +117,9 @@ public class AplicacionWebTest {
 		Muestra m = mock(Muestra.class);
 		List<Muestra> muestras = Arrays.asList(m);                                                                                                                                                                                                                                                                          ;
 		TipoFiltro tipoFiltro = mock(FiltroFechaMuestra.class);
-		Filtro filtro = new Filtro(muestras, tipoFiltro);
+		Filtro filtro = new Filtro( tipoFiltro);
 		
-		verify(filtro, times(1)).aplicarFiltro();
+		verify(filtro, times(1)).aplicarFiltro(muestras);
 		
        
 	}
