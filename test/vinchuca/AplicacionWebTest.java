@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,111 +18,79 @@ import org.junit.jupiter.api.Test;
 public class AplicacionWebTest {
 
 	private AplicacionWeb aplicacionWeb;
-	private ManejadorMuestras manejadorDeMuestra;
-	private ManejadorZonasCobertura manejadorZona;
-	private ManejadorUsuario manejadorUsuarios;
-	private ManejadorOpiniones manejadorOpiniones;
-	private Ubicacion ubicacion;
-	private LocalDate fecha;
+	private Muestra muestra;
+	private ZonaCobertura zona;
+	private ZonaCobertura zona2;
 	private Usuario usuario;
-	private ManejadorMuestraVerificada manejador;
-	private Estado estadoBasico;
-	private TipoDeOpinion tipo;
+	private Opinion opinion;
+	private Filtro filtro;
+	
+	
 	
 	@BeforeEach
 	public void setup() {
-		manejadorDeMuestra = mock(ManejadorMuestras.class);
-		manejadorZona = mock(ManejadorZonasCobertura.class);
-		manejadorUsuarios = mock(ManejadorUsuario.class);
-		manejadorOpiniones = mock(ManejadorOpiniones.class);
-		ubicacion = mock(Ubicacion.class);
-		aplicacionWeb = new AplicacionWeb(manejadorDeMuestra, manejadorZona, manejadorUsuarios, manejadorOpiniones);
-		fecha = LocalDate.now();
+		muestra = mock(Muestra.class);
+		zona = mock(ZonaCobertura.class);
+		opinion = mock(Opinion.class);
+		zona2 = mock(ZonaCobertura.class);
+		aplicacionWeb = new AplicacionWeb();
+		
 		usuario = mock(Usuario.class);
-		manejador = mock(ManejadorMuestraVerificada.class);
-		estadoBasico = mock(EstadoBasico.class);
-		tipo = TipoDeOpinion.VINCHUCA;
+	
 	}
 	
+	
 	@Test
-	public void testeandoLaCreacionDeZona() {
-		when(manejadorZona.crearYRegistrarZonaDeCobertura("nombre", ubicacion, 2)).thenReturn(new ZonaCobertura("nombre", ubicacion, 2));
-		assertEquals(aplicacionWeb.crearYRegistrarZonaDeCobertura("nombre", ubicacion, 2).getNombre(), "nombre");
+	public void testeandoElRegistroDeMuestra() {
+		aplicacionWeb.registrarMuestra(muestra);
+		assertEquals(aplicacionWeb.getMuestras().size(),1);
 		
 	}
 	
 	@Test
-	public void testeandoLaCreacionDeMuestra() {
-		when(manejadorDeMuestra.crearYRegistrarMuestra( "especie", "foto", fecha, ubicacion, usuario,  manejador)).thenReturn(new Muestra("especie", "foto", fecha, ubicacion, estadoBasico, usuario,  manejador));
-		assertEquals(aplicacionWeb.crearYRegistrarMuestra("especie", "foto", fecha, ubicacion, usuario,  manejador).getEspecieDeVinchuca(), "especie");
+	public void testeandoElAvisarDeZona() {
+		aplicacionWeb.registrarZonaDeCobertura(zona);
+		aplicacionWeb.registrarMuestra(muestra);
 		
+		verify(zona, times(1)).avisarNuevaMuestra(muestra);
 	}
 	
 	@Test
-	public void testeandoLaCreacionDeOpiniones() {
+	public void testeandoElRegistroDeZona() {
+		aplicacionWeb.registrarZonaDeCobertura(zona);
+		assertEquals(aplicacionWeb.getZonas().size(),1);
+	}
 	
-		Opinion opinionEsperada = new Opinion(tipo, fecha, usuario); 
+	@Test
+	public void testeandoElRegistroDeUsuario() {
+		aplicacionWeb.registrarUsuario(usuario);
+		assertEquals(aplicacionWeb.getUsuarios().size(),1);
+	}
+	
+	@Test
+	public void testeandoElRegistroDeOpinion() {
+		aplicacionWeb.registrarOpinion(opinion);
+		assertEquals(aplicacionWeb.getOpiniones().size(),1);
+	}
+	
+	 @Test
+	    void testeandoZonasQueSolapan() {
+	      	aplicacionWeb.registrarZonaDeCobertura(zona2);
+	        when(zona2.seSolapaCon(zona)).thenReturn(true);
 
-        when(manejadorOpiniones.crearYRegistrarOpiniones(tipo, fecha, usuario))
-            .thenReturn(opinionEsperada);
-		
-       Opinion opinionObtenida = aplicacionWeb.crearYRegistrarOpiniones(tipo, fecha, usuario);
-		
-       assertEquals(tipo, opinionObtenida.getTipo());
-       
-        verify(manejadorOpiniones).crearYRegistrarOpiniones(tipo, fecha, usuario);
-	}
-		
-	@Test
-	public void testeandoLaCreacionDeUsuarios() {
+	        assertEquals(aplicacionWeb.zonasQueSolapan(zona).size(), 1);
+	    }
 	
-		/*Usuario usuarioEsperada = new Usuario(); 
+	/* @Test
+	    void testeandoFiltro() {
+		 	List<Muestra> muestras= new ArrayList<>();
+		 	muestras.add(muestra);
+		 	aplicacionWeb.registrarMuestra(muestra);
+	      	aplicacionWeb.filtrarMuestras(filtro);
+	        when(filtro.aplicarFiltro(muestras)).thenReturn(muestra);
 
-        when(manejadorUsuarios.crearYRegistrarUsuario())
-            .thenReturn(usuarioEsperada);*/
-		
-      aplicacionWeb.crearYRegistrarUsuario();
-		
-       
-        verify(manejadorUsuarios, times(1)).crearYRegistrarUsuario();
-       
-	}
+	        assertEquals(aplicacionWeb.zonasQueSolapan(zona).size(), 1);
+	    }
 	
-	@Test
-	public void testeandoLaCreacionDeUsuariosProfesionales() {
-		
-      aplicacionWeb.crearYRegistrarUsuariosProfesionales();
-		
-       
-        verify(manejadorUsuarios, times(1)).crearYRegistrarUsuariosProfesionales();
-       
-	}
-	
-	@Test
-	public void testeandoGetMuestra() {
-		
-		when(manejadorDeMuestra.crearYRegistrarMuestra( "especie", "foto", fecha, ubicacion, usuario,  manejador)).thenReturn(new Muestra("especie", "foto", fecha, ubicacion, estadoBasico, usuario,  manejador));
-		
-		List <Muestra>lista = Arrays.asList(new Muestra("especie", "foto", fecha, ubicacion, estadoBasico, usuario,  manejador));
-		when(manejadorDeMuestra.getListaDeMuestras()).thenReturn(lista);
-		aplicacionWeb.crearYRegistrarMuestra("especie", "foto", fecha, ubicacion, usuario,  manejador).getEspecieDeVinchuca();
-       
-		
-        assertEquals(aplicacionWeb.getMuestras().size(),1);
-        
-       
-	}
-	
-	public void testeandoFiltro() {
-		
-		Muestra m = mock(Muestra.class);
-		List<Muestra> muestras = Arrays.asList(m);                                                                                                                                                                                                                                                                          ;
-		TipoFiltro tipoFiltro = mock(FiltroFechaMuestra.class);
-		Filtro filtro = new Filtro( tipoFiltro);
-		
-		verify(filtro, times(1)).aplicarFiltro(muestras);
-		
-       
-	}
-	
+	*/
 }

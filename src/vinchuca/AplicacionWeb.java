@@ -1,60 +1,81 @@
 package vinchuca;
 
-
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class AplicacionWeb {
 
-	private ManejadorMuestras manejadorDeMuestra;
-	private ManejadorZonasCobertura manejadorZona;
-	private ManejadorUsuario manejadorUsuarios;
-	private ManejadorOpiniones manejadorOpiniones;
+	private List<Muestra> muestras;
+	private List<ZonaCobertura> zonas;
+	private List<Usuario> usuarios;
+	private List<Opinion> opiniones;
 	
 	
-	public AplicacionWeb(ManejadorMuestras manejadorMuestra, ManejadorZonasCobertura manejadorZona, ManejadorUsuario manejadorUsuarios, ManejadorOpiniones manejadorOpiniones) {
+	public AplicacionWeb() {
 		super();
-		this.manejadorDeMuestra = manejadorMuestra;
-		this.manejadorZona = manejadorZona;
-		this.manejadorUsuarios = manejadorUsuarios;
-		this.manejadorOpiniones = manejadorOpiniones;
+		this.muestras = new ArrayList<Muestra>();
+		this.zonas = new ArrayList<ZonaCobertura>();
+		this.usuarios = new ArrayList<Usuario>();
+		this.opiniones = new ArrayList<Opinion>();
 	}
 	
-	public ZonaCobertura crearYRegistrarZonaDeCobertura(String nombre, Ubicacion ubicacion, double radio) {
-		ZonaCobertura zonaNueva = manejadorZona.crearYRegistrarZonaDeCobertura(nombre, ubicacion, radio);
-		return zonaNueva;
-	}
-	
-	public Muestra crearYRegistrarMuestra(String especieDeVinchuca, String foto, LocalDate fechaMuestra, Ubicacion ubicacion,  Usuario autor, ManejadorMuestraVerificada manejadorMuestra) {
-		Muestra muestra = manejadorDeMuestra.crearYRegistrarMuestra(especieDeVinchuca, foto, fechaMuestra, ubicacion, autor, manejadorMuestra);
-		manejadorZona.notificarMuestraNueva(muestra);
-		return muestra;
-	}
-	
-	public Opinion crearYRegistrarOpiniones(TipoDeOpinion tipo, LocalDate fecha, Usuario persona){
-		Opinion opinion = manejadorOpiniones.crearYRegistrarOpiniones(tipo, fecha, persona);
+	public void registrarZonaDeCobertura(ZonaCobertura zona) {
+		zonas.add(zona);
 		
-		return opinion;
 	}
 	
-	public Usuario crearYRegistrarUsuario() {
-		Usuario usuario = manejadorUsuarios.crearYRegistrarUsuario();
-		return usuario;
+	public void registrarMuestra(Muestra muestra) {
+	
+		muestras.add(muestra);
+		this.notificarMuestraNueva(muestra);
+		
 	}
 	
-	public UsuarioProfesional crearYRegistrarUsuariosProfesionales() {
-		UsuarioProfesional usuarioProfesional = manejadorUsuarios.crearYRegistrarUsuariosProfesionales();
-		return usuarioProfesional;
+	private void notificarMuestraNueva(Muestra muestra) {
+		for(ZonaCobertura zona : zonas) {
+			zona.avisarNuevaMuestra(muestra);
+		}
+		
 	}
+
+	public void registrarOpinion(Opinion opinion){
+		opiniones.add(opinion);
+		
+		
+	}
+	
+	public void registrarUsuario(Usuario usuario) {
+		usuarios.add(usuario);
+	}
+	
 	
 	public List<Muestra> getMuestras(){
-		return manejadorDeMuestra.getListaDeMuestras();
+		return muestras;
+	}
+
+	public List<ZonaCobertura> zonasQueSolapan(ZonaCobertura zona){
+		return this.zonas.stream().filter(z -> z.seSolapaCon(zona)).toList();
 	}
 	
 	public List<Muestra> filtrarMuestras(Filtro filtro){
 		
-		List<Muestra> muestras = manejadorDeMuestra.getListaDeMuestras();
+		
 		return filtro.aplicarFiltro(muestras);
+	}
+
+	public List<ZonaCobertura> getZonas() {
+		
+		return zonas;
+	}
+
+	public List<Usuario> getUsuarios() {
+		
+		return usuarios;
+	}
+
+	public List<Opinion> getOpiniones() {
+	
+		return opiniones;
 	}
 }
