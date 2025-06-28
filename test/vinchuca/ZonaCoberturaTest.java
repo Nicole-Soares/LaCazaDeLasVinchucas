@@ -2,7 +2,7 @@ package vinchuca;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +10,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class ZonaCoberturaTest {
-	
+class ZonaCoberturaTest {
     private ZonaCobertura zona;
     private Ubicacion epicentro;
     private Muestra muestraDentro;
@@ -71,13 +70,13 @@ public class ZonaCoberturaTest {
 
     @Test
     void test04_ZonasQueSolapan() {
-        ManejadorZonasCobertura manejador = mock(ManejadorZonasCobertura.class);
+        AplicacionWeb app = mock(AplicacionWeb.class);
         List<ZonaCobertura> resultado = new ArrayList<>();
         resultado.add(mock(ZonaCobertura.class));
 
-        when(manejador.zonasQueSolapan(zona)).thenReturn(resultado);
+        when(app.zonasQueSolapan(zona)).thenReturn(resultado);
 
-        assertEquals(resultado, zona.zonasQueSolapan(manejador));
+        assertEquals(resultado, zona.zonasQueSolapan(app));
     }
 
     @Test

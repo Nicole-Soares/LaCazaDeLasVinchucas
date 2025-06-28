@@ -19,11 +19,15 @@ public class ZonaCobertura implements Sujeto{
         this.muestras = new ArrayList<>();
         this.interesados = new HashSet<>();
     }
-    public List<ZonaCobertura> zonasQueSolapan(ManejadorZonasCobertura manejador){
-        return manejador.zonasQueSolapan(this);
+    public List<ZonaCobertura> zonasQueSolapan(AplicacionWeb app){
+        return app.zonasQueSolapan(this);
     }
-    public void addMuestra(Muestra muestra) {
+    public ZonaCobertura addMuestra(Muestra muestra) {
+        if(contiene(muestra)) {
             this.muestras.add(muestra);
+            avisarNuevaMuestra(muestra);
+        }
+        return this;
     }
     public boolean contiene(Muestra muestra) {
         return this.epicentro.distanciaEntre(muestra.getUbicacion()) <= this.radio;
@@ -65,14 +69,12 @@ public class ZonaCobertura implements Sujeto{
     @Override
     public void sacarInteresado(Observador observador) {
         this.interesados.remove(observador);
+        
     }
     @Override
     public void avisarNuevaMuestra(Muestra muestra) {
-        if(this.contiene(muestra)) {
-           this.addMuestra(muestra);
-           for(Observador interesado : this.interesados) {
-               interesado.serNotificadoNuevaMuestra(this, muestra);
-           }
+        for(Observador interesado : this.interesados) {
+            interesado.serNotificadoNuevaMuestra(this, muestra);
         }
     }
     @Override

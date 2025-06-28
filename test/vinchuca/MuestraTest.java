@@ -25,38 +25,43 @@ public class MuestraTest {
     private Estado estadoBasico;
     private Usuario personaBasica;
     private Usuario personaExperta;
-    //private Filtro filtro;
-    private ManejadorMuestraVerificada manejador;
+    private ObservadorMuestra manejador;
     private Ubicacion ubicacion;
     private Ubicacion ubicacion2;
     private LocalDate fecha;
+    private LocalDate fecha2;
     private Opinion opinionBasica;
     private Opinion opinionBasicaDos;
     private Opinion opinionBasicaTres;
+    private Opinion opinionBasicaCuatro;
     private Opinion opinionExperta;
     private Opinion opinionExpertaDos;
     private Opinion opinionExpertaTres;
     private ZonaCobertura zonaCobertura;
+    private TipoDeOpinion tipo;
+    private TipoDeOpinion tipo2;
     
-   
     @BeforeEach
     public void setup(){
     	
-    	personaBasica = mock(Usuario.class);
-    	personaExperta = mock(Usuario.class);
+    	personaBasica = new Usuario();
+    	personaExperta = new UsuarioProfesional();
     	ubicacion = mock(Ubicacion.class);
     	ubicacion2 = mock(Ubicacion.class);
-    	//filtro = mock(Filtro.class);
     	fecha = LocalDate.now();
-    	manejador = mock(ManejadorMuestraVerificada.class);//new ManejadorMuestra();
+    	fecha2 = LocalDate.of(2024, 3, 15);
+    	manejador = mock(ObservadorMuestra.class);//new ManejadorMuestra();
     	estadoBasico = new EstadoBasico();
+    	tipo = TipoDeOpinion.VINCHUCA;
+    	tipo2 = TipoDeOpinion.CHINCHEFOLIADA;
     	muestra = new Muestra("chinche", "foto", fecha, ubicacion,estadoBasico, personaBasica, manejador);
-    	opinionBasica = mock(Opinion.class);
-    	opinionBasicaDos = mock(Opinion.class);
-    	opinionBasicaTres = mock(Opinion.class);
-    	opinionExperta = mock(Opinion.class);
-    	opinionExpertaDos = mock(Opinion.class);
-    	opinionExpertaTres = mock(Opinion.class);
+    	opinionBasica = new Opinion( tipo,  fecha, personaBasica);
+    	opinionBasicaDos =  new Opinion( tipo,  fecha, personaBasica);
+    	opinionBasicaTres = new Opinion( tipo2,  fecha, personaBasica);
+    	opinionBasicaCuatro = new Opinion( tipo2,  fecha, personaBasica);
+    	opinionExperta = new Opinion( tipo,  fecha2, personaExperta);
+    	opinionExpertaDos = new Opinion( tipo2,  fecha, personaExperta);
+    	opinionExpertaTres =  new Opinion( tipo,  fecha, personaExperta);
     	zonaCobertura = mock(ZonaCobertura.class);
     
     }
@@ -93,14 +98,10 @@ public class MuestraTest {
   
     @Test
     public void testeandoNotificacionMuestraVerificada() {
-    	when(opinionExperta.esOpinionDeExperto()).thenReturn(true);
-   	    when(opinionExperta.getTipo()).thenReturn(TipoDeOpinion.VINCHUCA);
-
-   	    when(opinionExpertaDos.esOpinionDeExperto()).thenReturn(true);
-   	    when(opinionExpertaDos.getTipo()).thenReturn(TipoDeOpinion.VINCHUCA);
-
+    	
+   	  
    	    muestra.cargarOpinion(opinionExperta);    
-   	    muestra.cargarOpinion(opinionExpertaDos);  
+   	    muestra.cargarOpinion(opinionExpertaTres);  
    	   
    	    verify(manejador, times(1)).notificarMuestraVerificada(muestra);
 
@@ -110,12 +111,6 @@ public class MuestraTest {
     public void testeandoFechaDeLaUltimaOpinion() {
     	
     	
-    	LocalDate fecha1 = LocalDate.of(2024, 3, 15);
-    	LocalDate fecha2 = LocalDate.of(2024, 3, 15);
-    	
-    	when(opinionBasica.getFechaDeOpinion()).thenReturn(fecha1);
-        when(opinionExperta.getFechaDeOpinion()).thenReturn(fecha2);
-        
         muestra.cargarOpinion(opinionBasica);
  	    muestra.cargarOpinion(opinionExperta);
  	   
@@ -125,14 +120,14 @@ public class MuestraTest {
    
     @Test
     public void testeandoLaCargaDeUnaOpinionDePersonaBasicaEnEstadoBasicoLaMuestra() {
-	   when(opinionBasica.esOpinionDeExperto()).thenReturn(false);
+	  
 	   muestra.cargarOpinion(opinionBasica);
 	   assertTrue(muestra.getOpiniones().contains(opinionBasica));
     }
    
     @Test
     public void testeandoLaCargaDeUnaOpinionDePersonaExpertaEnEstadoBasicoLaMuestra() {
-	   when(opinionExperta.esOpinionDeExperto()).thenReturn(true);
+	   
 	   muestra.cargarOpinion(opinionExperta);
 	   
 	 
@@ -141,25 +136,17 @@ public class MuestraTest {
    
     @Test
     public void testeandoLaCargaDeUnaOpinionDePersonaExpertaEnEstadoBasicoDeLaMuestraYDespuesLaDeUnaPersonaBasica() {
-	   when(opinionExperta.esOpinionDeExperto()).thenReturn(true);
+	   
 	   muestra.cargarOpinion(opinionExperta);
 	   
-	   when(opinionBasica.esOpinionDeExperto()).thenReturn(false);
+	  
 	   muestra.cargarOpinion(opinionBasica);
 	   assertFalse(muestra.getOpiniones().contains(opinionBasica));
     }
    
     @Test
     public void testeandoLaCargaDeDosOpinionesDiferentesDeExpertos() {
-	    when(opinionExperta.esOpinionDeExperto()).thenReturn(true);
-	    when(opinionExperta.getTipo()).thenReturn(TipoDeOpinion.VINCHUCA);
-
-	    when(opinionExpertaDos.esOpinionDeExperto()).thenReturn(true);
-	    when(opinionExpertaDos.getTipo()).thenReturn(TipoDeOpinion.CHINCHEFOLIADA);
-
-	    when(opinionExpertaTres.esOpinionDeExperto()).thenReturn(true);
-	    when(opinionExpertaTres.getTipo()).thenReturn(TipoDeOpinion.FITHUFOLIADA); // tercera distinta
-
+	 
 	    muestra.cargarOpinion(opinionExperta);     // carga 1
 	    muestra.cargarOpinion(opinionExpertaDos);  // carga 2 (diferente)
 	    muestra.cargarOpinion(opinionExpertaTres); // carga 3 (debería permitirla)
@@ -172,93 +159,85 @@ public class MuestraTest {
      //chequeamos estado verificado no acepta mas opiniones
     @Test
     public void testeandoLaCargaDeDosOpinionesIgualesDeExpertosHaciendoQueMuestraEsteVerificada() {
-	    when(opinionExperta.esOpinionDeExperto()).thenReturn(true);
-	    when(opinionExperta.getTipo()).thenReturn(TipoDeOpinion.VINCHUCA);
-
-	    when(opinionExpertaDos.esOpinionDeExperto()).thenReturn(true);
-	    when(opinionExpertaDos.getTipo()).thenReturn(TipoDeOpinion.VINCHUCA);
-
-	    //ya esta verificada porque coinciden
-	    when(opinionExpertaTres.esOpinionDeExperto()).thenReturn(true);
-	    when(opinionExpertaTres.getTipo()).thenReturn(TipoDeOpinion.FITHUFOLIADA); // tercera distinta
-
+	    
 	    muestra.cargarOpinion(opinionExperta);     // carga 1
-	    muestra.cargarOpinion(opinionExpertaDos);  // carga 2 
-	    muestra.cargarOpinion(opinionExpertaTres); // carga 3 (no la agrega)
+	    muestra.cargarOpinion(opinionExpertaTres); // mismo tipo  
+	    muestra.cargarOpinion(opinionExpertaDos);  // (no la agrega)
 
-	    assertFalse(muestra.getOpiniones().contains(opinionExpertaTres)); // esta en estado verificada, no agrega mas
+	    assertFalse(muestra.getOpiniones().contains(opinionExpertaDos)); // esta en estado verificada, no agrega mas
 
     }
    
     @Test
     public void testeandoResultadoActualConPersonasBasicasYMuestraEnEstadoBasico() {
-	   when(opinionBasica.esOpinionDeExperto()).thenReturn(false);
-	   when(opinionBasica.getTipo()).thenReturn(TipoDeOpinion.VINCHUCA);
+	  
 	   
 	   muestra.cargarOpinion(opinionBasica);
-	   
-	   when(opinionBasicaDos.esOpinionDeExperto()).thenReturn(false);
-	   when(opinionBasicaDos.getTipo()).thenReturn(TipoDeOpinion.VINCHUCA);
-	   
 	   muestra.cargarOpinion(opinionBasicaDos);
 	   
-	   assertEquals(muestra.resultadoActual(), opinionBasica);
+	   assertEquals(muestra.resultadoActual(), TipoDeOpinion.VINCHUCA);
+
+    }
+    
+    @Test
+    public void testeandoResultadoActualSinOpinionesYMuestraEnEstadoBasico() {
+	  
+	   
+	  
+	   
+	   assertEquals(muestra.resultadoActual(), TipoDeOpinion.NINGUNA);
 
     }
    
     @Test
-    public void testeandoResultadoActualConDosPersonasBasicasQueCoincidenYUnaQueNoYMuestraEnEstadoBasico() {
-	   when(opinionBasica.esOpinionDeExperto()).thenReturn(false);
-	   when(opinionBasica.getTipo()).thenReturn(TipoDeOpinion.VINCHUCA);
+    public void testeandoResultadoActualConPersonasBasicasCreandoEmpateYMuestraEnEstadoBasico() {
+	  
 	   
 	   muestra.cargarOpinion(opinionBasica);
-	   
-	   when(opinionBasicaDos.esOpinionDeExperto()).thenReturn(false);
-	   when(opinionBasicaDos.getTipo()).thenReturn(TipoDeOpinion.VINCHUCA);
-	   
 	   muestra.cargarOpinion(opinionBasicaDos);
 	   
-	   when(opinionBasicaTres.esOpinionDeExperto()).thenReturn(false);
-	   when(opinionBasicaTres.getTipo()).thenReturn(TipoDeOpinion.FITHUFOLIADA);
+	   muestra.cargarOpinion(opinionBasicaTres);
+	   muestra.cargarOpinion(opinionBasicaCuatro);
 	   
+	   assertEquals(muestra.resultadoActual(), TipoDeOpinion.EMPATE);
+
+    }
+    @Test
+    public void testeandoResultadoActualConDosPersonasBasicasQueCoincidenYUnaQueNoYMuestraEnEstadoBasico() {
+	 
+	   muestra.cargarOpinion(opinionBasica);
+	   
+	   muestra.cargarOpinion(opinionBasicaDos);
+	  
 	   muestra.cargarOpinion(opinionBasicaTres);
 	   
 	   
-	   assertEquals(muestra.resultadoActual(), opinionBasica);
+	   assertEquals(muestra.resultadoActual(), TipoDeOpinion.VINCHUCA);
 
     }
    
     @Test
     public void testeandoResultadoActualConPersonasExpertasQueNoCoincidenYMuestraEnEstadoExperto() {
     	
-        when(opinionExperta.esOpinionDeExperto()).thenReturn(true);
-	    when(opinionExperta.getTipo()).thenReturn(TipoDeOpinion.FITHUFOLIADA);
+      
 	    muestra.cargarOpinion(opinionExperta);
-	   
-	    when(opinionExpertaDos.esOpinionDeExperto()).thenReturn(true);
-	    when(opinionExpertaDos.getTipo()).thenReturn(TipoDeOpinion.VINCHUCA);
 	    muestra.cargarOpinion(opinionExpertaDos);
 	   
-		assertEquals(muestra.resultadoActual(), opinionExperta);
+		assertEquals(muestra.resultadoActual(), TipoDeOpinion.EMPATE);
 
     }
     
     @Test
     public void testeandoResultadoActualConPersonasBasicaYExpertasYMuestraEnEstadoExperto() {
     	
-    	when(opinionBasica.esOpinionDeExperto()).thenReturn(false);
-  	    when(opinionBasica.getTipo()).thenReturn(TipoDeOpinion.VINCHUCA);
+    	
   	    muestra.cargarOpinion(opinionBasica);
     	
-        when(opinionExperta.esOpinionDeExperto()).thenReturn(true);
-	    when(opinionExperta.getTipo()).thenReturn(TipoDeOpinion.FITHUFOLIADA);
 	    muestra.cargarOpinion(opinionExperta);
 	   
-	    when(opinionExpertaDos.esOpinionDeExperto()).thenReturn(true);
-	    when(opinionExpertaDos.getTipo()).thenReturn(TipoDeOpinion.VINCHUCA);
-	    muestra.cargarOpinion(opinionExpertaDos);
+	 
 	   
-		assertEquals(muestra.resultadoActual(), opinionExperta);
+		assertEquals(muestra.resultadoActual(), TipoDeOpinion.VINCHUCA);
 
     }
     
@@ -266,38 +245,25 @@ public class MuestraTest {
     @Test
     public void testeandoResultadoActualConPersonasExpertasYMuestraEnEstadoVerificado() {
    	
-       when(opinionExperta.esOpinionDeExperto()).thenReturn(true);
-	    when(opinionExperta.getTipo()).thenReturn(TipoDeOpinion.FITHUFOLIADA);
+      
 	    muestra.cargarOpinion(opinionExperta);
 	   
-	    when(opinionExpertaDos.esOpinionDeExperto()).thenReturn(true);
-	    when(opinionExpertaDos.getTipo()).thenReturn(TipoDeOpinion.FITHUFOLIADA);
-	    muestra.cargarOpinion(opinionExpertaDos);
+	    muestra.cargarOpinion(opinionExpertaTres);
 	   
-		assertEquals(muestra.resultadoActual(), opinionExperta);
+		assertEquals(muestra.resultadoActual(), TipoDeOpinion.VINCHUCA);
 
     }
     
     @Test
     public void testeandoResultadoActualConPersonasBasicaYExpertasYMuestraEnEstadoVerificado() {
 	   
-	   when(opinionBasica.esOpinionDeExperto()).thenReturn(false);
-	   when(opinionBasica.getTipo()).thenReturn(TipoDeOpinion.VINCHUCA);
+	  
 	   muestra.cargarOpinion(opinionBasica);
+	   muestra.cargarOpinion(opinionExperta);// PASA A EXPERTO
+	   muestra.cargarOpinion(opinionExpertaTres);//sigue en experto porque no coinciden
+	   muestra.cargarOpinion(opinionExpertaDos); // pasa a verificado
 	   
-	   when(opinionExperta.esOpinionDeExperto()).thenReturn(true);
-	   when(opinionExperta.getTipo()).thenReturn(TipoDeOpinion.FITHUFOLIADA);
-	   muestra.cargarOpinion(opinionExperta);
-	   
-	   when(opinionExpertaDos.esOpinionDeExperto()).thenReturn(true);
-	   when(opinionExpertaDos.getTipo()).thenReturn(TipoDeOpinion.CHINCHEFOLIADA);
-	   muestra.cargarOpinion(opinionExpertaDos);
-	   
-	   when(opinionExpertaTres.esOpinionDeExperto()).thenReturn(true);
-	   when(opinionExpertaTres.getTipo()).thenReturn(TipoDeOpinion.FITHUFOLIADA);
-	   muestra.cargarOpinion(opinionExpertaTres);
-	   
-	   assertEquals(muestra.resultadoActual(), opinionExperta);
+	  assertEquals(muestra.resultadoActual(), TipoDeOpinion.VINCHUCA);
     }
    
    
@@ -312,6 +278,7 @@ public class MuestraTest {
 	}
 	
 	
+	
 	@Test
 	public void testeandoLaDesuscripcionDeUnaZona() {
 	      
@@ -321,4 +288,12 @@ public class MuestraTest {
 	      //assertFalse(manejador.getListaDeSuscriptores().contains(zonaCobertura)); 
 	 }
   
+	@Test
+	public void testeandoUsuarioYaOpino() {
+	      
+		  muestra.cargarOpinion(opinionBasica);
+
+	      
+	      assertTrue(muestra.yaOpino(personaBasica)); 
+	 }
 }

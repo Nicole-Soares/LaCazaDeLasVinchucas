@@ -9,7 +9,7 @@ public class EstadoBasico extends Estado{
 	}
 
 	@Override
-	public Opinion resultadoActual(Muestra muestra) {
+	public TipoDeOpinion resultadoActual(Muestra muestra) {
 		return muestra.resultadoFinalEnEstadoBasico();
 		
 	}

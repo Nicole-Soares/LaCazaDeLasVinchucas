@@ -6,21 +6,25 @@ import java.util.List;
 
 public class Usuario {
 
-
+	String nombre;
 	List<Opinion> opinionesEmitidas;
 	List<Muestra> muestrasEmitidas;
 	CategoriaUsuario categoria;
 	
 	
-	public Usuario() {
+	public Usuario(String nombre) {
 		super();
+		this.nombre = nombre;
 		this.opinionesEmitidas = new ArrayList<>();
 		this.muestrasEmitidas = new ArrayList<>();
 		this.categoria = new CategoriaBasico();
 	}
 
 
-
+	public String getNombre() {
+		return nombre;
+	}
+	
 	public List<Opinion> getOpinionesEmitidas() {
 		return opinionesEmitidas;
 	}
@@ -48,20 +52,21 @@ public class Usuario {
 	}
 
 	public void opinarSobre(Muestra muestra, Opinion opinion) {
-		//no puede opinar mas de 1 vez de una muestra
-		if (muestra.yaOpino(this)) { 
-            System.out.println("Error: Ya ha opinado sobre esta muestra.");
-            return;
-		}
-		//no puede opinar sobre su muestra
-		 if (muestra.getAutor().equals(this)) { 
-	            System.out.println("Error: No se puede opinar sobre la propia muestra.");
-	            return;// para que salga
-	        }
-		muestra.cargarOpinion(opinion);
-		this.opinionesEmitidas.add(opinion);
-		this.verificarCategoria();
-	}
+        // No puede opinar más de 1 vez de una muestra
+        if (muestra.yaOpino(this)) {
+        	throw new IllegalStateException("Error: Ya ha opinado sobre esta muestra.");
+        }
+        
+        // No puede opinar sobre su propia muestra
+        if (muestra.getAutor().equals(this)) {
+        	throw new IllegalArgumentException("Error: No se puede opinar sobre la propia muestra.");
+        }
+        
+        // Si las validaciones pasan, se procede con la carga de la opinión
+        muestra.cargarOpinion(opinion);
+        this.opinionesEmitidas.add(opinion);
+        this.verificarCategoria(); // Por ejemplo, si opinar cambia la categoría del usuario
+    }
 	
 	public void enviarMuestra(Muestra muestra) {
 		this.muestrasEmitidas.add(muestra);
@@ -72,9 +77,6 @@ public class Usuario {
 		return this.categoria.esExperto();
 	}
 	
-	public boolean esBasico() {
-		return this.categoria.esBasico();
-	}
 
 	public void verificarCategoria() {
 		// Ultimos 30 dias
@@ -90,6 +92,25 @@ public class Usuario {
 													.count();
 		
 		this.categoria.verificarCategoria(this,cantidadDeOpiniones, cantidadDeMuestrasEnviadas);
+	}
+
+
+
+	public void verificarCategoriaSiendoBasico(long cantidadDeOpiniones, long cantidadDeMuestrasEnviadas) {
+		if (cantidadDeOpiniones > 20 && cantidadDeMuestrasEnviadas > 10) {
+			this.cambiarCategoria(new CategoriaExperto());
+		}
+		
+	}
+
+
+
+	public void verificarCategoriaSiendoExperto(long cantidadDeOpiniones, long cantidadDeMuestrasEnviadas) {
+		if (cantidadDeOpiniones < 20 || cantidadDeMuestrasEnviadas < 10) {
+			this.cambiarCategoria(new CategoriaBasico());
+		}
+		
+		
 	}
 	
 	

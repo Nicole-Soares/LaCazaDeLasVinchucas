@@ -4,12 +4,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManejadorMuestraVerificada {
+public class ObservadorMuestra {
 
 	private List <ZonaCobertura> listaDeZonasCobertura;
 	
 
-	public ManejadorMuestraVerificada() {
+	public ObservadorMuestra() {
 		super();
 		this.listaDeZonasCobertura = new ArrayList<ZonaCobertura>();
 	}

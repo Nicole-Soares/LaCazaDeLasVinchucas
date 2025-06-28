@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 public class Muestra {
@@ -15,11 +16,11 @@ public class Muestra {
 	private List<Opinion> opiniones;
 	private Estado estado;
 	private Usuario autor;
-	private ManejadorMuestraVerificada manejadorMuestra;
+	private ObservadorMuestra manejadorMuestra;
 	
 	
 
-	public Muestra(String especieDeVinchuca, String foto, LocalDate fechaMuestra, Ubicacion ubicacion, Estado estado, Usuario autor, ManejadorMuestraVerificada manejadorMuestra ) {
+	public Muestra(String especieDeVinchuca, String foto, LocalDate fechaMuestra, Ubicacion ubicacion, Estado estado, Usuario autor, ObservadorMuestra manejadorMuestra ) {
 		super();
 		this.especieDeVinchuca = especieDeVinchuca;
 		this.foto = foto;
@@ -110,11 +111,11 @@ public class Muestra {
 
 	
 
-	public ManejadorMuestraVerificada getManejadorMuestra() {
+	public ObservadorMuestra getManejadorMuestra() {
 		return manejadorMuestra;
 	}
 
-	public void setManejadorMuestra(ManejadorMuestraVerificada manejadorMuestra) {
+	public void setManejadorMuestra(ObservadorMuestra manejadorMuestra) {
 		this.manejadorMuestra = manejadorMuestra;
 	}
 
@@ -125,29 +126,21 @@ public class Muestra {
 		
 	}
 	
-	public void cargarOpinion(Opinion opinion) {
-		// tengo que ver si la opinion recibida es de una persona que pueda opinar segun el estado actual de su muestra
-		estado.cargarOpinion(this,  opinion);
-	}
 	
-	public Opinion resultadoActual() {
+	/////////////////////////////////////////////////////////RESULTADO FINAL///////////////////////////////////////////////////////////////////////////////
+	public TipoDeOpinion resultadoActual() {
 		
-		
-		//recorrer la lista e ir creando un map
 		// tiene que tener en cuenta el estado
-		
 		return estado.resultadoActual(this);
-		
-		
 	}
 	
 
-	public Opinion resultadoFinalEnEstadoBasico() {
+	public TipoDeOpinion resultadoFinalEnEstadoBasico() {
 		Map<TipoDeOpinion, Integer> conteo = new HashMap<>();
 	
 			for(Opinion opinion: opiniones) {
 				if(this.seEncuentraEnMap(opinion, conteo)) {
-					this.sumarUnoAlMapDeLaOpinion(opinion, conteo); // creo que no es necesario hacer =, se actualiza solo por el objeto
+					this.sumarUnoAlMapDeLaOpinion(opinion, conteo); 
 				}
 				else {
 					this.meterLaOpinionEnElMap(opinion, conteo);
@@ -160,40 +153,42 @@ public class Muestra {
 	
 	
 
-	public Opinion resultadoFinalEnEstadoExperto() {
-		// recorro la lista y retorno la primera opinion de un experto, si estoy en el estado experto es porque no comentaron dos expertos lo mismo, por ende retorno el primero que encuentre
-		
-		
-		List<Opinion> opinionesARecorrer = opiniones;
-		
-		while( !opinionesARecorrer.getFirst().esOpinionDeExperto()) {
-			opinionesARecorrer.remove(0);
-		}
-		return opinionesARecorrer.getFirst();
-		
+	public TipoDeOpinion resultadoFinalEnEstadoExperto() {
+	
+        List<Opinion> opinionesDeExpertos = this.opiniones.stream()
+                .filter(opinion -> opinion.esExperto())
+                .collect(Collectors.toList());
+
+        // Si hay mas de 1 opinion de experto, es un empate.
+        if(opinionesDeExpertos.size() == 1) {
+        	return opinionesDeExpertos.getFirst().getTipo();
+        }
+        else {
+            return TipoDeOpinion.EMPATE;
+        }
 		
 	}
 	
-	public Opinion resultadoFinalEnEstadoVerificado() {
-	    // Contamos cuántas veces aparece cada tipo de opinión entre los expertos
-		//solo opiniones de expertos (los tipos)
-	    Map<TipoDeOpinion, Long> conteoPorTipo = opiniones.stream()
-	        .filter(Opinion::esOpinionDeExperto)
-	        .collect(Collectors.groupingBy(Opinion::getTipo, Collectors.counting()));
+	
+	
+	public TipoDeOpinion resultadoFinalEnEstadoVerificado() {
+		 // Contamos cuántas veces aparece cada tipo de opinión, solo de expertos.
+        Map<TipoDeOpinion, Long> conteoPorTipo = opiniones.stream()
+            .filter(opinion -> opinion.esExperto()) 
+            .collect(Collectors.groupingBy(Opinion::getTipo, Collectors.counting())); // Contamos por tipo
 
-	    //Buscamos el tipo con al menos dos opiniones
-	    Opinion opinionDefinitiva = conteoPorTipo.entrySet().stream()
-		        .filter(entry -> entry.getValue() >= 2)
-		        .map(Map.Entry::getKey)
-		        .findFirst()
-		        .flatMap(tipo ->
-		            opiniones.stream()
-		                .filter(o -> o.getTipo() == tipo && o.esOpinionDeExperto())
-		                .findFirst()
-		        )
-		        .orElse(null);
-	    
-	    return opinionDefinitiva;
+        //  Buscamos el tipo con al menos dos opiniones de expertos
+        //  la muestra ya está en estado Verificado, por ende existe el tipo
+        
+        TipoDeOpinion tipoDefinitivo = conteoPorTipo.entrySet().stream()
+            .filter(entry -> entry.getValue() >= 2) // Filtramos las entradas donde la cantidad es 2 o más
+            .map(Map.Entry::getKey) // Obtenemos solo el TipoDeOpinion de esas entradas
+            .findFirst() // Tomamos el primer TipoDeOpinion que cumpla la condición
+           
+            // no se encuentra un tipo con >= 2 votos, retornamos NINGUNA (no deberia pasar), no deberia haber EMPATE tampoco
+            .orElse(TipoDeOpinion.NINGUNA); 
+
+        return tipoDefinitivo;
 	}
 
 	private boolean seEncuentraEnMap(Opinion opinion, Map<TipoDeOpinion, Integer> opinionesEnMap) {
@@ -212,78 +207,139 @@ public class Muestra {
 		
 	}
 	
-	private TipoDeOpinion tipoMasRepetido(Map<TipoDeOpinion, Integer> opinionesEnMap) {
-	    TipoDeOpinion masRepetido = null;
-	    int maxFrecuencia = 0;
 
-	    for (Map.Entry<TipoDeOpinion, Integer> entry : opinionesEnMap.entrySet()) {
-	        if (entry.getValue() > maxFrecuencia) {
-	            maxFrecuencia = entry.getValue();
-	            masRepetido = entry.getKey();
-	        }
-	    }
+	private TipoDeOpinion opinionMasVecesRepetida(Map<TipoDeOpinion, Integer> tipos) {
+	 
+	
+		// si esta vacio es ninguna
+        if (tipos.isEmpty()) {
+            return TipoDeOpinion.NINGUNA;
+        }
 
-	    return masRepetido;
+        TipoDeOpinion tipoMasFrecuente = null;
+        int cantidadDeVecesRepetidoDelTipoMasFrecuente = 0; 
+
+        
+        // Recorremos cada entrada (clave-valor) del mapa.
+        for (Entry<TipoDeOpinion, Integer> tipo : tipos.entrySet()) {
+            TipoDeOpinion tipoActual = tipo.getKey();
+            int cantidadDeVecesRepetidoDelTipoActual = tipo.getValue();
+
+           //actualizamos
+            if (cantidadDeVecesRepetidoDelTipoActual > cantidadDeVecesRepetidoDelTipoMasFrecuente) {
+            	cantidadDeVecesRepetidoDelTipoMasFrecuente = cantidadDeVecesRepetidoDelTipoActual;
+                tipoMasFrecuente = tipoActual;
+            }
+        }
+
+        // chequeamos si hay un empate.
+        // Recorremos el mapa otra vez para ver si algún otro tipo tiene la misma cantidad de veces repetidas.
+        int cantidadDeTiposConMismaCantidadDeVecesRepetidos = 0;
+        for (int cantidad : tipos.values()) { // Iteramos solo sobre los valores 
+            if (cantidad == cantidadDeVecesRepetidoDelTipoMasFrecuente) { // comparamos las veces que aparece el tipo actual con las veces que aparece el mas frecuente sacado antes
+            	cantidadDeTiposConMismaCantidadDeVecesRepetidos++;
+            }
+        }
+
+        //  Devolvemos el resultado: si solo un tipo tiene la frecuencia máxima, es el ganador;
+        // de lo contrario, es un empate.
+        if (cantidadDeTiposConMismaCantidadDeVecesRepetidos == 1) {
+            return tipoMasFrecuente; // Hay un único ganador.
+        } else {
+            return TipoDeOpinion.EMPATE; // Hay empate (múltiples tipos con la misma frecuencia máxima).
+        }
 	}
 
-	private Opinion opinionMasVecesRepetida(Map<TipoDeOpinion, Integer> opinionesEnMap) {
-	    TipoDeOpinion tipo = tipoMasRepetido(opinionesEnMap);
-	    //recorro la lista de opiniones y voy filtrando las opiniones del tipo mas repetido, devuelvo la primera opinion de ese tipo
-	    return opiniones.stream()
-	        .filter(o -> o.getTipo() == tipo)
-	        .findFirst()
-	        .orElse(null);
+
+	////////////////////////////////////////////////CARGA DE OPINIONES//////////////////////////////////////////////////////////
+	
+	public void cargarOpinion(Opinion opinion) {
+		// tengo que ver si la opinion recibida es de una persona que pueda opinar segun el estado actual de su muestra
+		estado.cargarOpinion(this,  opinion);
 	}
-
-
-
+	
+	
+	//se acepta cualquier opinion
 	public void cargarOpinionEnEstadoBasico(Opinion opinion) {
-		//EstadoExperto estadoExperto = new EstadoExperto();
 		this.agregarOpinion(opinion);
-		if(opinion.esOpinionDeExperto()) {
+		opinion.evaluarParaCargarOpinionMuestraBasica(this); // delegamos en opinion para saber si es una opinion de experto, si es de experto hay que cambiar estado
+		
+		
+	}
+	
+	
+		//esto viene de la opinon si es que es experto, si es basico no hace nada
+		public void procesarCargaEnMuestraBasicaConOpinionExperto() {
 			EstadoExperto estadoExperto = new EstadoExperto();
 			this.cambiarEstado(estadoExperto);
-		}
-		
-	}
-	
-	public void cargarOpinionEnEstadoExperto(Opinion opinion) { 
-		
-		
-		if(opinion.esOpinionDeExperto()) {
-			//chequeo que esa opinion no este ya hecha, si esta en este estado es porque ya algun experto anterior publico una opinion
-			if(this.mismaOpinionYaPublicada(opinion)) {
-				EstadoVerificado estadoVerificado = new EstadoVerificado();
-				this.cambiarEstado(estadoVerificado);
-				this.agregarOpinion(opinion);
-				manejadorMuestra.notificarMuestraVerificada(this);
-			}
-			this.agregarOpinion(opinion);
 			
 		}
+		//agregar uml
+		public void procesarCargaEnMuestraBasicaConOpinionBasica() {
+			//no hace nada, porque el cambio de estado sucede si una opinion es de experto
+			
+		}
+	
+	//solo acepta opiniones de expertos, si coinciden al menos dos opiniones de experto, pasa a verificado
+	public void cargarOpinionEnEstadoExperto(Opinion opinion) { 
 		
+		opinion.evaluarParaCargarOpinionMuestraExperto(this);
 		
 	}
 	
-	public void cargarOpinionEnEstadoVerificado(Opinion opinion) {
-		System.out.println("No se aceptan mas opiniones");
+	//si estamos aca es porque la opinion nueva es de un experto
+	public void procesarCargaEnMuestraExpertaConOpinionExperto(Opinion opinion) {
+		
+		this.mismaOpinionYaPublicada(opinion); // chequea para ver el cambio de estado
+		this.agregarOpinion(opinion);// siempre la carga, ya que si estamos aca es una opinion de experto
+		
+	}
+	
+	public void procesarCargaEnMuestraExpertaConOpinionBasica(Opinion opinion) {
+		// no hace nada porque las muestras en estado experto solo aceptan opiniones de expertos.
+		
+	}
+	
+	
+	private void mismaOpinionYaPublicada(Opinion opinion) {
+		
+		for(Opinion opinionActual: opiniones) {
+			opinionActual.evaluarOpinion(this, opinion); // para ver si la opinion actual es de experto
+		}
+	
+	}
+	
+	public void chequearConOpinionExperta(Opinion opinionDeLaListaDeMuestra, Opinion opinionCargadaNueva) {
+		
+		if(opinionDeLaListaDeMuestra.getTipo() == opinionCargadaNueva.getTipo()) { // ya se que las dos son opiniones de experto, solo me falta chequear el tipo, si coincide, cambio estado a verificado
+			EstadoVerificado estadoVerificado = new EstadoVerificado();
+			this.cambiarEstado(estadoVerificado);
+			manejadorMuestra.notificarMuestraVerificada(this);
+		}
 		
 	}
 
+
+
+
+	public void chequearConOpinionBasica(Opinion opinionDeLaListaDeMuestra, Opinion opinionCargadaNueva) {
+		// no hace nada porque es una opinion basica y muestra esta en estado experto
+		
+	}
+
+	public void cargarOpinionEnEstadoVerificado(Opinion opinion) {
+		//System.out.println("No se aceptan mas opiniones");
+		throw new IllegalArgumentException("No se aceptan mas opiniones");
+		
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	private void cambiarEstado(Estado estado) {
 		this.setEstado(estado);
 		
 	}
 
 	
-
-	private boolean mismaOpinionYaPublicada(Opinion opinion) {
-		return opiniones.stream()
-	            .anyMatch(o -> o.esOpinionDeExperto() && o.getTipo() == opinion.getTipo());
-	}
-
-	
-
 	
 	public void suscribir(ZonaCobertura zona) {
 		manejadorMuestra.suscribir(zona, this);
@@ -301,6 +357,31 @@ public class Muestra {
 		             .anyMatch(o -> o.getPersona().equals(usuario)); 
 		   
 	}
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+	
+
+
+
+	
 	
 	
 	
