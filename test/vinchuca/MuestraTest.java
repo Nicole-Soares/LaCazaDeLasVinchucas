@@ -44,8 +44,8 @@ public class MuestraTest {
     @BeforeEach
     public void setup(){
     	
-    	personaBasica = new Usuario();
-    	personaExperta = new UsuarioProfesional();
+    	personaBasica = new Usuario("Daenerys");
+    	personaExperta = new UsuarioProfesional("Daemon");
     	ubicacion = mock(Ubicacion.class);
     	ubicacion2 = mock(Ubicacion.class);
     	fecha = LocalDate.now();

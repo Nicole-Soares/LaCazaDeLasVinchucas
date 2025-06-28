@@ -328,8 +328,8 @@ public class Muestra {
 	}
 
 	public void cargarOpinionEnEstadoVerificado(Opinion opinion) {
-		//System.out.println("No se aceptan mas opiniones");
-		throw new IllegalArgumentException("No se aceptan mas opiniones");
+		System.out.println("No se aceptan mas opiniones");
+		
 		
 	}
 
