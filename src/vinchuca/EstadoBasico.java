@@ -15,9 +15,23 @@ public class EstadoBasico extends Estado{
 	}
 
 	@Override
-	public String nombre() {
+	protected boolean cumpleVerificacionBasica() {
 		
-		return "Basico";
+		return true;
 	}
+
+	@Override
+	protected boolean cumpleVerificacionExperta() {
+		
+		return false;
+	}
+
+	@Override
+	protected boolean cumpleVerificacion() {
+	
+		return false;
+	}
+
+	
 	
 }

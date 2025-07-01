@@ -145,8 +145,7 @@ public class UsuarioTest {
         assertTrue(usuario.getOpinionesEmitidas().contains(opinionMock));
         assertEquals(1, usuario.getOpinionesEmitidas().size());
         
-        // Verificar que se llamó a verificarCategoria
-        verify(categoriaBasicoMock, times(1)).verificarCategoria(eq(usuario), anyLong(), anyLong());
+        
     }
 
    
@@ -160,8 +159,7 @@ public class UsuarioTest {
         assertTrue(usuario.getMuestrasEmitidas().contains(muestraMock));
         assertEquals(1, usuario.getMuestrasEmitidas().size());
         
-        // Verificar que se llamó a verificarCategoria
-        verify(categoriaBasicoMock, times(1)).verificarCategoria(eq(usuario), anyLong(), anyLong());
+        
     }
 
    

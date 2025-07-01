@@ -15,10 +15,23 @@ public class EstadoExperto extends Estado {
 	}
 
 	@Override
-	public String nombre() {
+	protected boolean cumpleVerificacionBasica() {
 		
-		return "Experto";
+		return false;
 	}
+
+	@Override
+	protected boolean cumpleVerificacionExperta() {
+		
+		return true;
+	}
+
+	@Override
+	protected boolean cumpleVerificacion() {
+		
+		return false;
+	}
+
 	
 }
 

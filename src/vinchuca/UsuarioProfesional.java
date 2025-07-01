@@ -4,8 +4,8 @@ package vinchuca;
 public class UsuarioProfesional extends Usuario{
 
 	
-	public UsuarioProfesional() {
-		super();
+	public UsuarioProfesional(String nombre) {
+		super(nombre);
 		this.categoria= new CategoriaExperto();
 		
 	}

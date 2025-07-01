@@ -22,12 +22,8 @@ public class ZonaCobertura implements Sujeto{
     public List<ZonaCobertura> zonasQueSolapan(AplicacionWeb app){
         return app.zonasQueSolapan(this);
     }
-    public ZonaCobertura addMuestra(Muestra muestra) {
-        if(contiene(muestra)) {
+    private void addMuestra(Muestra muestra) {
             this.muestras.add(muestra);
-            avisarNuevaMuestra(muestra);
-        }
-        return this;
     }
     public boolean contiene(Muestra muestra) {
         return this.epicentro.distanciaEntre(muestra.getUbicacion()) <= this.radio;
@@ -73,8 +69,11 @@ public class ZonaCobertura implements Sujeto{
     }
     @Override
     public void avisarNuevaMuestra(Muestra muestra) {
-        for(Observador interesado : this.interesados) {
+        if(contiene(muestra)) {
+            addMuestra(muestra);
+            for(Observador interesado : this.interesados) {
             interesado.serNotificadoNuevaMuestra(this, muestra);
+            }
         }
     }
     @Override

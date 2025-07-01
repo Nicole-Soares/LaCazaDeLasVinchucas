@@ -9,7 +9,7 @@ import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ManagerMuestraVerificadaTest {
+public class ObservadorMuestraTest {
 
 	
 

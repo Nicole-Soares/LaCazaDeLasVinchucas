@@ -6,7 +6,13 @@ public abstract class  Estado {
 
 	public abstract TipoDeOpinion resultadoActual(Muestra muestra);
 
-	public abstract String nombre();
+	protected abstract boolean cumpleVerificacionBasica();
+
+	protected abstract boolean cumpleVerificacionExperta();
+
+	protected abstract boolean cumpleVerificacion();
+
+	
 	
 
 }

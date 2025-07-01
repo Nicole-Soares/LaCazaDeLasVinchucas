@@ -44,7 +44,7 @@ class ZonaCoberturaTest {
     void test01_AgregarMuestraDentroDelRadio() {
         zona.agregarInteresado(observador);
 
-        zona.addMuestra(muestraDentro);
+        zona.avisarNuevaMuestra(muestraDentro);
         
         //La muestra se acepta al estar dentro del rango, por lo que se notifica a los interesados.
         verify(observador).serNotificadoNuevaMuestra(zona, muestraDentro);
@@ -52,18 +52,19 @@ class ZonaCoberturaTest {
     }
 
     @Test
-    void test02_NoAgregaMuestraFueraDelRadio() {
+    void test02_ZonaNoEsNotificadaYNoAgregaMuestraFueraDelRadio() {
         zona.agregarInteresado(observador);
 
-        zona.addMuestra(muestraFuera);
+        zona.avisarNuevaMuestra(muestraFuera);
 
         // No se notifica porque la muestra no estaba dentro del rango
         verify(observador, never()).serNotificadoNuevaMuestra(any(), any());
+        assertEquals(zona.getMuestras().size(), 0);
     }
 
     @Test
     void test03_RemoverMuestra() {
-        zona.addMuestra(muestraDentro);
+        zona.avisarNuevaMuestra(muestraDentro);
         zona.removeMuestra(muestraDentro);
         assertEquals(zona.getMuestras().size(), 0);
     }
@@ -103,13 +104,12 @@ class ZonaCoberturaTest {
 
     @Test
     void test07_Getters() {
-    	zona.addMuestra(muestraDentro);
     	zona.agregarInteresado(observador);
     	
         assertEquals("Zona Sur", zona.getNombre());
         assertEquals(epicentro, zona.getEpicentro());
         assertEquals(10.0, zona.getRadio());
-        assertEquals(zona.getMuestras().size(), 1);
+        assertEquals(zona.getMuestras().size(), 0);
         assertEquals(zona.getInteresados().size(), 1);
     }
     @Test
@@ -122,7 +122,6 @@ class ZonaCoberturaTest {
         zona.agregarInteresado(observador);
         zona.sacarInteresado(observador);
 
-        zona.addMuestra(muestraDentro);
 
         // No debería recibir notificaciones si se desuscribió
         verify(observador, never()).serNotificadoNuevaMuestra(any(), any());

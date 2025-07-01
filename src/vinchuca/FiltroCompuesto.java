@@ -1,10 +1,23 @@
 package vinchuca;
 
-public abstract class FiltroCompuesto implements TipoFiltro {
+import java.util.ArrayList;
+import java.util.List;
 
-	
-	
-	public abstract boolean cumple(Muestra muestra);
-	
+public abstract class FiltroCompuesto extends Filtro{
+    
+    private List<Filtro> filtros;
 
+    public FiltroCompuesto() {
+        this.filtros = new ArrayList<>();
+    }
+    public List<Filtro> getFiltros(){
+        return this.filtros;
+    }
+    public FiltroCompuesto addFiltro(Filtro filtro) {
+        this.filtros.add(filtro);
+        return this;
+    }
+    public void removeFiltro(Filtro filtro) {
+        this.filtros.remove(filtro);
+    }
 }

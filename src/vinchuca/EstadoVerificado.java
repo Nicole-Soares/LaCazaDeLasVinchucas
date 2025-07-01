@@ -15,11 +15,24 @@ public class EstadoVerificado extends Estado {
 	}
 
 	@Override
-	public String nombre() {
+	protected boolean cumpleVerificacionBasica() {
 		
-		return "Verificado";
+		return false;
 	}
 
+	@Override
+	protected boolean cumpleVerificacionExperta() {
+		
+		return false;
+	}
+
+	@Override
+	protected boolean cumpleVerificacion() {
+		
+		return true;
+	}
+
+	
 	
 	
 	

@@ -54,11 +54,11 @@ public class Muestra {
 
 
 	
-	public Estado getEstado() {
+	/*public Estado getEstado() {
 		return estado;
 	}
 
-	
+	*/
 
 	public void setEstado(Estado estado) {
 		this.estado = estado;
@@ -181,7 +181,7 @@ public class Muestra {
         //  la muestra ya está en estado Verificado, por ende existe el tipo
         
         TipoDeOpinion tipoDefinitivo = conteoPorTipo.entrySet().stream()
-            .filter(entry -> entry.getValue() >= 2) // Filtramos las entradas donde la cantidad es 2 o más
+            .filter(entry -> entry.getValue() == 2) // Filtramos las entradas donde la cantidad es 2, ya que en verificado solo va a haber como min y max un tipo 2 veces repetido
             .map(Map.Entry::getKey) // Obtenemos solo el TipoDeOpinion de esas entradas
             .findFirst() // Tomamos el primer TipoDeOpinion que cumpla la condición
            
@@ -360,30 +360,34 @@ public class Muestra {
 
 
 
+	public boolean cumpleVerificacionBasica() {
+		
+		return estado.cumpleVerificacionBasica();
+	}
+
+
+
+	public boolean cumpleVerificacionExperta() {
+		
+		return estado.cumpleVerificacionExperta();
+	}
+
+
+
+	public boolean cumpleVerificacion() {
+		
+		return estado.cumpleVerificacion();
+	}
+
+
+
 	
 
 
 
-
-
-
-
-
-
-
-
-
 	
 
 
 
-	
-
-
-
-	
-	
-	
-	
 	
 }
