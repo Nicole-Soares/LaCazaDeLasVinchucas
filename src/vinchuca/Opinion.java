@@ -40,7 +40,7 @@ public class Opinion {
 	*/
 
 		// la catgoria de la persona cambia, la de la opinion no
-		public boolean esExperto() {
+		public boolean fueEmitidaPorExperto() {
 			return categoria.esExperto();
 		}
 		

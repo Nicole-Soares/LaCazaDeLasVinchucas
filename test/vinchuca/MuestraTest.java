@@ -123,6 +123,7 @@ public class MuestraTest {
 	  
 	   muestra.cargarOpinion(opinionBasica);
 	   assertTrue(muestra.getOpiniones().contains(opinionBasica));
+	   assertTrue(muestra.cumpleVerificacionBasica());
     }
    
     @Test
@@ -142,6 +143,7 @@ public class MuestraTest {
 	  
 	   muestra.cargarOpinion(opinionBasica);
 	   assertFalse(muestra.getOpiniones().contains(opinionBasica));
+	   assertTrue(muestra.cumpleVerificacionExperta());
     }
    
     @Test
@@ -165,7 +167,7 @@ public class MuestraTest {
 	    muestra.cargarOpinion(opinionExpertaDos);  // (no la agrega)
 
 	    assertFalse(muestra.getOpiniones().contains(opinionExpertaDos)); // esta en estado verificada, no agrega mas
-
+	    assertTrue(muestra.cumpleVerificacion());
     }
    
     @Test

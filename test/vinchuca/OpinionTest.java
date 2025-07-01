@@ -68,7 +68,7 @@ public class OpinionTest {
 
         opinion = new Opinion(tipo, LocalDate.now(), usuario);
 
-        assertTrue(opinion.esExperto(), "Una opinión de un experto debería devolver true en esExperto()");
+        assertTrue(opinion.fueEmitidaPorExperto(), "");
         verify(categoriaExperto, times(1)).esExperto(); // Verificamos que se llamó a esExperto() en la categoría
     }
 
@@ -80,7 +80,7 @@ public class OpinionTest {
 
         opinion = new Opinion(tipo, LocalDate.now(), usuario);
 
-        assertFalse(opinion.esExperto(), "Una opinión de un usuario básico debería devolver false en esExperto()");
+        assertFalse(opinion.fueEmitidaPorExperto(), "Una opinión de un usuario básico debería devolver false en esExperto()");
         verify(categoriaBasica, times(1)).esExperto(); // Verificamos que se llamó a esExperto() en la categoría
     }
 

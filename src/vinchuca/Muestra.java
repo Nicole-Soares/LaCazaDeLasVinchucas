@@ -156,7 +156,7 @@ public class Muestra {
 	public TipoDeOpinion resultadoFinalEnEstadoExperto() {
 	
         List<Opinion> opinionesDeExpertos = this.opiniones.stream()
-                .filter(opinion -> opinion.esExperto())
+                .filter(opinion -> opinion.fueEmitidaPorExperto())
                 .collect(Collectors.toList());
 
         // Si hay mas de 1 opinion de experto, es un empate.
@@ -174,7 +174,7 @@ public class Muestra {
 	public TipoDeOpinion resultadoFinalEnEstadoVerificado() {
 		 // Contamos cuántas veces aparece cada tipo de opinión, solo de expertos.
         Map<TipoDeOpinion, Long> conteoPorTipo = opiniones.stream()
-            .filter(opinion -> opinion.esExperto()) 
+            .filter(opinion -> opinion.fueEmitidaPorExperto()) 
             .collect(Collectors.groupingBy(Opinion::getTipo, Collectors.counting())); // Contamos por tipo
 
         //  Buscamos el tipo con al menos dos opiniones de expertos
