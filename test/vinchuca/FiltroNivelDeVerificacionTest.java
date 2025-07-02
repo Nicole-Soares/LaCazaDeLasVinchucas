@@ -1,5 +1,6 @@
 package vinchuca;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -18,6 +19,7 @@ public class FiltroNivelDeVerificacionTest {
 	private FiltroVerificacion filtroMuestraVerificada;
 	private FiltroVerificacion filtroMuestraExperta;
 	private FiltroVerificacion filtroMuestraBasica;
+	private FiltroNivelDeVerificacion filtroNivelDeVerificacion;
 	private Muestra muestra;
 	private Muestra muestra2;
 	private Muestra muestra3;
@@ -36,10 +38,11 @@ public class FiltroNivelDeVerificacionTest {
 		filtroMuestraVerificada = new FiltroMuestraVerificada();
 		filtroMuestraExperta = new FiltroMuestraExperta();
 		filtroMuestraBasica = new FiltroMuestraBasica();
+		filtroNivelDeVerificacion = new FiltroNivelDeVerificacion(filtroMuestraVerificada);
 		personaBasica = new Usuario("Daenerys");
 		ubicacion = mock(Ubicacion.class);
     	fecha = LocalDate.now();
-    	manejador = mock(ObservadorMuestra.class);//new ManejadorMuestra();
+    	manejador = mock(ObservadorMuestra.class);
     	estadoBasico = new EstadoBasico();
     	estadoVerificado = new EstadoVerificado();
     	estadoExperto = new EstadoExperto();
@@ -60,5 +63,11 @@ public class FiltroNivelDeVerificacionTest {
 	@Test
 	public void testeandoQueCumplaLaMuestraVerificaa() {
 		assertTrue(filtroMuestraVerificada.cumple(muestra2));
+	}
+	
+	@Test
+	public void testeandoCambioDeFiltroDeVerificacion() {
+		filtroNivelDeVerificacion.cambiarFiltroVerificacion(filtroMuestraBasica);
+		assertEquals(filtroNivelDeVerificacion.getFiltoVerificacion(), filtroMuestraBasica);
 	}
 }

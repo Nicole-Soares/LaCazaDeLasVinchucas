@@ -17,5 +17,13 @@ public class FiltroNivelDeVerificacion extends Filtro {
 	}
 
 
+	public void cambiarFiltroVerificacion(FiltroVerificacion filtro) {
+		this.filtoVerificacion = filtro;
+	}
+
+	public FiltroVerificacion getFiltoVerificacion() {
+		return filtoVerificacion;
+	}
+
 	
 }

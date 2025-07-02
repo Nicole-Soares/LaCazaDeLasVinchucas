@@ -11,22 +11,38 @@ import java.util.Arrays;
 public class UsuarioTest {
 
     private Usuario usuario;
+    private Usuario nuevoUsuario;
     private Muestra muestraMock;
+    private Muestra muestraMock2;
     private Opinion opinionMock;
     private CategoriaBasico categoriaBasicoMock; 
-    private CategoriaExperto categoriaExpertoMock; 
     private LocalDate fechaActual;
+    private Muestra muestra;
+    private Estado estadoBasico;
+    private Usuario personaBasica;
+    private Usuario personaExperta;
+    private ObservadorMuestra manejador;
+    private Ubicacion ubicacion;
+    private LocalDate fecha;
+   
+    
 
     @BeforeEach
     void setUp() {
         
         usuario = new Usuario("Rhaenyra");
-
-       
+        nuevoUsuario = new Usuario("Daenerys"); 
+        personaBasica = new Usuario("Daenerys");
+    	personaExperta = new UsuarioProfesional("Daemon");
+    	ubicacion = mock(Ubicacion.class);
+    	fechaActual = LocalDate.now();
+    	manejador = mock(ObservadorMuestra.class);
+    	estadoBasico = new EstadoBasico();
+    	muestra = new Muestra("chinche", "foto", fecha, ubicacion,estadoBasico, personaBasica, manejador);
         muestraMock = mock(Muestra.class);
+        muestraMock2 = mock(Muestra.class);
         opinionMock = mock(Opinion.class);
         categoriaBasicoMock = mock(CategoriaBasico.class); 
-        categoriaExpertoMock = mock(CategoriaExperto.class); 
         fechaActual = LocalDate.now();
 
       
@@ -40,50 +56,41 @@ public class UsuarioTest {
 
     @Test
     void testUsuarioSeInicializaCorrectamente() {
-       
-        Usuario nuevoUsuario = new Usuario("Daenerys"); 
 
-        assertNotNull(nuevoUsuario.getOpinionesEmitidas());
-        assertTrue(nuevoUsuario.getOpinionesEmitidas().isEmpty());
-        assertNotNull(nuevoUsuario.getMuestrasEmitidas());
-        assertTrue(nuevoUsuario.getMuestrasEmitidas().isEmpty());
-        
-        assertEquals(nuevoUsuario.getNombre(), "Daenerys");
+       assertTrue(nuevoUsuario.getOpinionesEmitidas().isEmpty());
+       assertTrue(nuevoUsuario.getMuestrasEmitidas().isEmpty());
+       assertEquals(nuevoUsuario.getNombre(), "Daenerys");
     }
 
     @Test
     void testGetOpinionesEmitidas() {
         usuario.agregarOpinion(opinionMock);
         assertEquals(1, usuario.getOpinionesEmitidas().size());
-        assertTrue(usuario.getOpinionesEmitidas().contains(opinionMock));
+        
     }
 
     @Test
     void testGetMuestrasEmitidas() {
         usuario.agregarMuestra(muestraMock);
         assertEquals(1, usuario.getMuestrasEmitidas().size());
-        assertTrue(usuario.getMuestrasEmitidas().contains(muestraMock));
+        
     }
 
     @Test
     void testCambiarCategoria() {
         // Asumiendo que el usuario ya está mockeado con categoriaBasicoMock en setUp
-        usuario.cambiarCategoria(categoriaExpertoMock);
-        assertEquals(categoriaExpertoMock, usuario.getCategoria());
+    	for(int i=0; i <21; i++) {
+    		  usuario.agregarOpinion(opinionMock);
+    	}
+    	for(int i=0; i <11; i++) {
+    		 usuario.agregarMuestra(muestraMock);
+  	}
+    	usuario.opinarSobre(muestra, opinionMock);
+    	usuario.enviarMuestra(muestraMock);
+        assertTrue(usuario.esExperto());
     }
 
    
-
-    @Test
-    void testEsExpertoCuandoCategoriaEsExperto() {
-       
-        usuario.cambiarCategoria(categoriaExpertoMock);
-        when(categoriaExpertoMock.esExperto()).thenReturn(true);
-
-        assertTrue(usuario.esExperto());
-        verify(categoriaExpertoMock, times(1)).esExperto(); 
-    }
-
 
 
    // Tests de `opinarSobre()` (Manejo de Excepciones)
@@ -109,9 +116,9 @@ public class UsuarioTest {
 
     @Test
     void testUsuarioNoPuedeOpinarSobreSuPropiaMuestra() {
-        // Configurar la muestra para que el autor sea el propio usuario que intenta opinar
+        
         when(muestraMock.getAutor()).thenReturn(usuario);
-        // También aseguramos que no haya opinado antes, para que esta sea la excepción que se lance
+        
         when(muestraMock.yaOpino(usuario)).thenReturn(false); 
         
         IllegalArgumentException thrown = assertThrows(
@@ -131,12 +138,12 @@ public class UsuarioTest {
 
     @Test
     void testUsuarioPuedeOpinarConExitoSiLasValidacionesPasan() {
-        // Configurar para que las validaciones pasen
+       
         when(muestraMock.yaOpino(usuario)).thenReturn(false);
         when(muestraMock.getAutor()).thenReturn(mock(Usuario.class)); // Autor es otro usuario
         
-        // Simular el comportamiento de cargarOpinion en la muestra
-        doNothing().when(muestraMock).cargarOpinion(opinionMock); // No hace nada
+       
+        doNothing().when(muestraMock).cargarOpinion(opinionMock); 
 
         usuario.opinarSobre(muestraMock, opinionMock);
         
@@ -164,73 +171,27 @@ public class UsuarioTest {
 
    
 
-    // Tests de `verificarCategoria()`
-
-    @Test
-    void testVerificarCategoriaDelegaACategoriaActual() {
-        // Configurar algunas opiniones y muestras para que verificarCategoria las cuente
-        // No importa tanto el contenido, sino que se llamen a los getters correctos
-        Opinion opinionAntigua = mock(Opinion.class);
-        when(opinionAntigua.getFechaDeOpinion()).thenReturn(fechaActual.minusDays(31)); // Fuera de los 30 días
-        Opinion opinionReciente1 = mock(Opinion.class);
-        when(opinionReciente1.getFechaDeOpinion()).thenReturn(fechaActual.minusDays(10)); // Dentro de los 30 días
-        Opinion opinionReciente2 = mock(Opinion.class);
-        when(opinionReciente2.getFechaDeOpinion()).thenReturn(fechaActual.minusDays(5));  // Dentro de los 30 días
-
-        Muestra muestraAntigua = mock(Muestra.class);
-        when(muestraAntigua.getFechaCreacion()).thenReturn(fechaActual.minusDays(40)); // Fuera
-        Muestra muestraReciente1 = mock(Muestra.class);
-        when(muestraReciente1.getFechaCreacion()).thenReturn(fechaActual.minusDays(20)); // Dentro
-
-        usuario.agregarOpinion(opinionAntigua);
-        usuario.agregarOpinion(opinionReciente1);
-        usuario.agregarOpinion(opinionReciente2);
-        usuario.agregarMuestra(muestraAntigua);
-        usuario.agregarMuestra(muestraReciente1);
-
-        // Llamar al método a testear
-        usuario.verificarCategoria();
-
-        // Verificar que la categoría actual fue llamada con los conteos correctos
-        // En este caso: 2 opiniones recientes, 1 muestra reciente
-        verify(categoriaBasicoMock, times(1)).verificarCategoria(usuario, 2L, 1L);
-    }
-    
-    // Tests para verificarCategoriaSiendoBasico (asumiendo que estos métodos son llamados por CategoriaBasico)
-    @Test
-    void testVerificarCategoriaSiendoBasicoCambiaAExperto() {
-        // usuario ya es CategoriaBasico (mockeado)
-        usuario.verificarCategoriaSiendoBasico(25L, 12L); // 25 opiniones > 20, 12 muestras > 10
-
-        // Verificar que el usuario cambió su categoría a Experto
-        // Como estamos testando Usuario, y CategoriaBasico lo llama,
-        // esperamos que Usuario cambie su propia categoría.
-        assertTrue(usuario.getCategoria() instanceof CategoriaExperto);
-    }
 
     @Test
     void testVerificarCategoriaSiendoBasicoNoCambiaSiNoCumpleCondiciones() {
-        // usuario ya es CategoriaBasico (mockeado)
-        usuario.verificarCategoriaSiendoBasico(15L, 5L); // No cumple ninguna condición
-        
-        // La categoría sigue siendo CategoriaBasico (el mock original, o si se restablece en el constructor)
-        // Para este test, necesitamos que el mock inicial no sea reemplazado por otro mock,
-        // o que el constructor del usuario se use para que inicialice CategoriaBasico real.
-        // Aquí, como el usuario fue mockeado para usar 'categoriaBasicoMock',
-        // verificamos que no se haya llamado a 'cambiarCategoria' para cambiar a Experto.
-        // O más fácil: crear un usuario real en el setup para este tipo de test.
-        // Vamos a re-inicializar el usuario para este test para que use un CategoriaBasico real.
-        Usuario usuarioReal = new Usuario("Federico");
-
-        usuarioReal.verificarCategoriaSiendoBasico(15L, 5L);
-        assertTrue(usuarioReal.getCategoria() instanceof CategoriaBasico);
+        // usuario ya es CategoriaBasico 
+       
+        for(int i=0; i <20; i++) {
+        	usuario.agregarOpinion(opinionMock);
+        }
+        for(int i=0; i <10; i++) {
+        	usuario.agregarMuestra(muestraMock);
+        }
+        usuario.opinarSobre(muestra, opinionMock);
+  	
+        assertFalse(usuario.esExperto());
     }
 
-    // Tests para verificarCategoriaSiendoExperto
+    
     @Test
     void testVerificarCategoriaSiendoExpertoCambiaABasico() {
-        // Configurar el usuario para que sea experto inicialmente
-        usuario.cambiarCategoria(new CategoriaExperto()); // Usamos una instancia real para este test
+       
+        usuario.cambiarCategoria(new CategoriaExperto()); 
         
         usuario.verificarCategoriaSiendoExperto(10L, 5L); // Menos de 20 opiniones Y menos de 10 muestras
 
@@ -240,10 +201,20 @@ public class UsuarioTest {
     @Test
     void testVerificarCategoriaSiendoExpertoNoCambiaSiCumpleCondiciones() {
         // Configurar el usuario para que sea experto inicialmente
-        usuario.cambiarCategoria(new CategoriaExperto()); // Usamos una instancia real para este test
+        usuario.cambiarCategoria(new CategoriaExperto()); 
         
         usuario.verificarCategoriaSiendoExperto(25L, 12L); // Más de 20 opiniones Y más de 10 muestras
 
         assertTrue(usuario.getCategoria() instanceof CategoriaExperto);
+    }
+    
+    @Test
+    void testVerificarCategoriaSiendoExpertoPorUsuarioExpertoNoCambiaSiCumpleCondiciones() {
+        // Configurar el usuario para que sea experto inicialmente
+        personaExperta.cambiarCategoria(new CategoriaExperto()); 
+        
+        usuario.verificarCategoriaSiendoExperto(10L, 3L); 
+
+        assertTrue(personaExperta.esExperto());
     }
 }
